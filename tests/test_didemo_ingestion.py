@@ -35,3 +35,13 @@ def test_default_selection_retains_every_eligible_video(tmp_path,monkeypatch):
     assert [len(selected['splits'][s]) for s in ('train','val','test')]==[3,2,1]
     assert selected['sampling_cap'] is None
     assert all(x['selected_videos']==x['license_eligible_videos'] for x in selected['coverage'].values())
+    licenses=tmp_path/'video_licenses.txt'
+    licenses.write_text(licenses.read_text().replace(
+        '5 https://example.invalid/5 http://creativecommons.org/licenses/by/2.0/',
+        '5 https://example.invalid/5 http://creativecommons.org/licenses/by-nc-sa/2.0/'))
+    normal=didemo.selection(tmp_path,tmp_path/'normal.json')
+    research=didemo.selection(tmp_path,tmp_path/'research.json',noncommercial_research=True)
+    assert len(normal['splits']['test'])==0
+    assert len(research['splits']['test'])==1
+    assert research['use_terms']['noncommercial_research_only'] is True
+    assert research['use_terms']['redistribute_media_or_weights'] is False

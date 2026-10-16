@@ -41,7 +41,7 @@ def fetch_metadata(directory='data/external/didemo'):
             'revision': REVISION, 'sha256': hashes}
 
 
-def selection(directory='data/external/didemo', output='data/interim/didemo-full-selection.json', counts=None):
+def selection(directory='data/external/didemo', output='data/interim/didemo-full-selection.json', counts=None, *, noncommercial_research=False):
     """Read video IDs for staging only; no caption text or target score is used."""
     provenance = fetch_metadata(directory)
     directory = Path(directory)
@@ -53,6 +53,9 @@ def selection(directory='data/external/didemo', output='data/interim/didemo-full
     hashes = dict(line.split() for line in (directory/'yfcc100m_hash.txt').read_text().splitlines())
     allowed = {'http://creativecommons.org/licenses/by/2.0/',
                'http://creativecommons.org/licenses/by-sa/2.0/'}
+    if noncommercial_research:
+        allowed.update({'http://creativecommons.org/licenses/by-nc/2.0/',
+                        'http://creativecommons.org/licenses/by-nc-sa/2.0/'})
     selected, official_sets = {}, {}
     if counts is not None and (len(counts)!=3 or any(type(n) is not int or n<1 for n in counts)):
         raise ValueError('Positive integer source-selection counts required')
@@ -76,6 +79,11 @@ def selection(directory='data/external/didemo', output='data/interim/didemo-full
         raise ValueError('Official video split overlap')
     result = {'source': provenance, 'selection':'SHA256 name order; CC BY2.0/BY-SA2.0 only; no score/caption filtering',
               'splits': selected, 'test_gold_used_for_selection': False}
+    if noncommercial_research:
+        result['selection'] = 'Every adaptation-permitting CC2.0 ID for noncommercial research; no score/caption filtering'
+        result['use_terms'] = {'noncommercial_research_only':True,
+            'preserve_per_source_attribution':True,'redistribute_media_or_weights':False,
+            'sharealike_terms_retained':True,'no_derivatives_license_categories_excluded':True}
     if counts is None:
         result['coverage'] = coverage
         result['sampling_cap'] = None
@@ -173,12 +181,16 @@ if __name__ == '__main__':
     parser.add_argument('--download',action='store_true')
     parser.add_argument('--expanded',action='store_true',help='Prospectively expanded availability cohort; no label/score filtering')
     parser.add_argument('--sample',action='store_true',help='Explicit historical small diagnostic cohort; not a full benchmark')
+    parser.add_argument('--noncommercial-research',action='store_true',help='Include adaptation-permitting BY-NC/BY-NC-SA sources for noncommercial research; retain all source terms')
     args=parser.parse_args()
     if args.expanded and args.sample:parser.error('Choose one historical sampling mode')
-    result = (selection(output='data/interim/didemo-expanded-selection.json',counts=(3000,500,500)) if args.expanded else
+    if args.noncommercial_research and (args.expanded or args.sample):parser.error('Research coverage has no historical sampling mode')
+    result = (selection(output='data/interim/didemo-research-selection.json',noncommercial_research=True) if args.noncommercial_research else
+              selection(output='data/interim/didemo-expanded-selection.json',counts=(3000,500,500)) if args.expanded else
               selection(output='data/interim/didemo-selection.json',counts=(500,50,100)) if args.sample else selection())
     if args.download:
-        download_all(result,output='data/interim/didemo-expanded-downloads' if args.expanded else
+        download_all(result,output='data/interim/didemo-research-downloads' if args.noncommercial_research else
+                     'data/interim/didemo-expanded-downloads' if args.expanded else
                      'data/interim/didemo-downloads' if args.sample else 'data/interim/didemo-full-downloads')
     elif args.probe:
         print(json.dumps(download_one(result['splits']['train'][0]),indent=2))

@@ -1,0 +1,30 @@
+{
+  "status": "prospective_before_additional_NC_source_download_encoding_or_fits",
+  "amends": "docs/full-coverage-protocol.json",
+  "reason": "Whole-data request requires considering permissible noncommercial research sources instead of retaining the earlier BY/BY-SA-only conservative filter.",
+  "use": "Private noncommercial research experiments; preserve attribution and per-source terms; no media, sampled frames, captions or weights published under the source-code license.",
+  "source_terms": [
+    "https://creativecommons.org/licenses/by/2.0/",
+    "https://creativecommons.org/licenses/by-sa/2.0/",
+    "https://creativecommons.org/licenses/by-nc/2.0/",
+    "https://creativecommons.org/licenses/by-nc-sa/2.0/"
+  ],
+  "license_eligible_videos": {
+    "train": 6005,
+    "val": 825,
+    "test": 762
+  },
+  "additional_disjoint_NC_videos": {
+    "train": 3840,
+    "val": 504,
+    "test": 561
+  },
+  "excluded_categories": [
+    "CC BY-ND2.0",
+    "CC BY-NC-ND2.0"
+  ],
+  "scope": "Every available valid adaptation-permitting CC source in the official metadata for this noncommercial study; not the entire official benchmark including NoDerivatives categories.",
+  "sampling_cap": null,
+  "download": "Continue immutable BY/BY-SA download; a separate disjoint NC-only batch avoids multiple writers to identical source paths. Merge hash-verified receipts for the complete joint research plan before decoder preflight/fitting.",
+  "training_evaluation": "Unchanged prespecified adapter grids, stopping, promotion, full validation and full retained-test query coverage. Prior observed subset exposure remains disclosed. No target-based filtering or test-guided tuning."
+}

@@ -36,3 +36,5 @@ aggregate results and algorithms; model pretraining overlap and near-duplicate v
 cannot be ruled out by exact media hashes.
 
 The complete official source has 33,005 training, 4,180 validation and 4,021 test queries across 8,511/1,094/1,037 videos. The current license scope admits 2,165/321/201 videos respectively. All are selected; final download and decoder-valid counts are pending. See [coverage audit](full-coverage-audit.json).
+
+The expanded noncommercial study includes BY-NC 2.0 and BY-NC-SA 2.0 sources: 6,005/825/762 candidate videos. Per-source attribution and terms are preserved; media and weights remain private. NoDerivatives categories are excluded. [Prospective amendment](full-research-coverage-amendment.json) binds this wider scope before additional downloads or fitting.

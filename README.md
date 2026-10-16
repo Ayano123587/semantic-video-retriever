@@ -1,10 +1,10 @@
 # Semantic Video Retriever
 
-Full-data coverage is being rebuilt. The earlier study accidentally rejected 2,200 licensed source names with non-MP4 original extensions before network access. The corrected default attempts all 2,687 eligible official videos with no sampling cap. Earlier scores below are historical subset results, not the full benchmark. See [coverage audit](docs/full-coverage-audit.json).
+The current noncommercial research run attempts every adaptation-permitting source in the pinned DiDeMo metadata: 6,005 training, 825 validation and 762 test video candidates. There is no sampling cap. Download and decoder validation are in progress, so these are candidate counts rather than completed benchmark counts. See [research coverage](docs/full-research-coverage-amendment.json).
 
 Find timestamped moments in real video using a natural-language description. A pinned CLIP image/text encoder supplies frozen features; contiguous five-second moments are ranked by cosine similarity. The current DiDeMo study trains a residual text adapter from real human descriptions and temporal references, with validation-only model selection.
 
-The earlier subset study completed 21 adapter fits and retained frozen CLIP. Its recorded results remain historical diagnostics. Current benchmark results will be updated after complete eligible-source ingestion, full-cohort training and evaluation; no subset score is presented as the full-dataset result.
+Full-cohort training and evaluation are in progress. Historical subset experiments are not presented as full-dataset results; earlier test exposure will remain disclosed in the expanded evaluation.
 
 ## Run
 
@@ -28,6 +28,15 @@ video-search "person opening a door" --index data/processed/my-index --top-k 5 -
 ```
 
 Source hashes, model revision and numeric-array hashes are checked on load. Weight-loading defects raise errors rather than substituting random features. See [Report](Report.md) for the real-data training procedure and [data sources](docs/datasets.md) for licensing and attribution.
+
+## Research data
+
+```powershell
+python -m src.data.didemo --noncommercial-research
+python -m src.data.didemo --noncommercial-research --download
+```
+
+This study includes CC BY/BY-SA/BY-NC/BY-NC-SA 2.0 sources for noncommercial research. Preserve each source attribution and license. Media, captions, frame samples and trained weights remain private. NoDerivatives categories remain excluded; this is not all license categories of the official benchmark. The animation demo above is an installation check.
 
 ## Executed notebooks
 
