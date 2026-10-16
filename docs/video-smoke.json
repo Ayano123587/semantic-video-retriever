@@ -1,0 +1,30 @@
+{
+  "source_commit": "fa22c27832a356f52d2f31d2fdfbd0207a903575",
+  "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+  "encoder": {
+    "model_id": "openai/clip-vit-base-patch32",
+    "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+    "loading_info": {
+      "missing_keys": [],
+      "unexpected_keys": [],
+      "mismatched_keys": [],
+      "error_msgs": []
+    }
+  },
+  "real_videos": 2,
+  "feature_seconds_excluding_model_load": 5.968649001000017,
+  "feature_replay_max_abs_error": 2.9802322387695312e-08,
+  "adapter_training": {
+    "real_training_queries": 2,
+    "epochs": 2,
+    "losses": [
+      1.6154358386993408,
+      1.569930076599121
+    ],
+    "checkpoint_replay_max_abs_error": 0.0,
+    "checkpoint_sha256": "c04f961399d72c7f8dc87bf83182579a671fd012f308efb52c709284f23f675b",
+    "benchmark_or_test_score": false
+  },
+  "purpose": "Actual real-data loading, gradient and save/reload readiness; not benchmark performance."
+}
