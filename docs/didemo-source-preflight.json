@@ -1,0 +1,42 @@
+{
+  "source_revision": "b6a555c8134581305d0ed4716fbc192860e0b88c",
+  "official_metadata_sha256": {
+    "train_data.json": "11130a5a05e00f141f16b0ea38e67fa58e04f7168526e0d87e9dd306b2ddb78a",
+    "val_data.json": "b0364cc256553332feb19d46bcc4cd2b09774949fe6c0b25e7ed0ff3c6aefebb",
+    "test_data.json": "1891c04ec48b3d364c739594b2b6413806b74bd9027c092d896e7ebb930ff1cd",
+    "video_licenses.txt": "a6b2efc4b071e6c5474f98bd1f23ebcfcd880530ba35a12dcac8070f96a6e2d4",
+    "yfcc100m_hash.txt": "481d9aaf020624d5915200bcf4752fb46d3e1931167e8b46715a5f342577cc4d"
+  },
+  "receipt_sha256": "cd32757336420ec36251d168e956944427cabcbdd51f5f6af8a8e6655937d373",
+  "selection_file_sha256": "b5d0d7934c8a77782e6f9c6f0e2925ea33bc62e312284ac848142f9bcbf4353c",
+  "files": {
+    "train.json": "f0e0c3c60a76de9ae3fb8bbd4f88c65708736eda8ebc0324a16913a0e56f4bfc",
+    "val.json": "344b24bbf98af4ffbf96a368fb06fd2b1e3f43faab0d55cd8f42d8c12e996495",
+    "media.json": "f0a3b186ae856befd3586e1e2ba3d04a1cdaa1e2519b79ebc3356383af978cb3"
+  },
+  "counts": {
+    "train": {
+      "source_video_ids": 365,
+      "unique_media": 365,
+      "queries": 1393,
+      "test_targets_staged": false
+    },
+    "val": {
+      "source_video_ids": 74,
+      "unique_media": 73,
+      "queries": 261,
+      "test_targets_staged": false
+    },
+    "test": {
+      "source_video_ids": 47,
+      "unique_media": 47,
+      "queries": null,
+      "test_targets_staged": false
+    }
+  },
+  "raw_media_redistributed": false,
+  "within_split_alias_copies": 1,
+  "alias_policy": "same-SHA video IDs coalesced; all human queries retained",
+  "test_target_policy": "test JSON read only for video geometry; captions/intervals never staged",
+  "availability_bias": "Fixed available CC subset; not full official benchmark; no score-based replacements"
+}
