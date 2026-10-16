@@ -1,8 +1,10 @@
 # Semantic Video Retriever
 
+Full-data coverage is being rebuilt. The earlier study accidentally rejected 2,200 licensed source names with non-MP4 original extensions before network access. The corrected default attempts all 2,687 eligible official videos with no sampling cap. Earlier scores below are historical subset results, not the full benchmark. See [coverage audit](docs/full-coverage-audit.json).
+
 Find timestamped moments in real video using a natural-language description. A pinned CLIP image/text encoder supplies frozen features; contiguous five-second moments are ranked by cosine similarity. The current DiDeMo study trains a residual text adapter from real human descriptions and temporal references, with validation-only model selection.
 
-Phase 1 completed nine adapter fits. None improved the prespecified validation objective enough to qualify, so frozen CLIP was retained (corpus consensus R@1 15.33% on 261 validation queries). A completed 12-fit conditional-loss follow-up also failed promotion across all 16 score policies. The final global policy is frozen to CLIP; the test remains sealed and no test score is available. The completed readiness check encoded two real videos, trained on two real queries and reproduced the saved checkpoint exactly. Its loss decrease is a mechanics check, not evidence of generalization.
+Phase 1 completed nine adapter fits. None improved the prespecified validation objective enough to qualify, so frozen CLIP was retained (corpus consensus R@1 15.33% on 261 validation queries). A completed 12-fit conditional-loss follow-up also failed promotion across all 16 score policies. The historical available-subset CLIP policy completed one-shot evaluation: corpus consensus R@1 19.25%, R@5 32.92% and within-video mean IoU 41.87% on 161 queries/951 moments from 47 available test videos. These are subset results, not full-dataset results. Full usable-data coverage is being audited and expanded; the prior subset test is now observed. The completed readiness check encoded two real videos, trained on two real queries and reproduced the saved checkpoint exactly. Its loss decrease is a mechanics check, not evidence of generalization.
 
 ## Run
 
@@ -36,6 +38,8 @@ Source hashes, model revision and numeric-array hashes are checked on load. Weig
 ![Actual two-query training replay](docs/figures/adapter-smoke-loss.png)
 
 Optional encoding/training is disabled by default in notebooks. Executed public outputs contain aggregates and timestamp geometry, not private descriptions or media. Raw footage, captions and weights remain ignored.
+
+- [Final evaluation](notebooks/03_final_evaluation.ipynb): executed identity checks and aggregate one-shot metrics, with validation/test cohort differences kept explicit.
 
 ## Data and limits
 

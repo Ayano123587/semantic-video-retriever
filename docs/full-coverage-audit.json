@@ -1,0 +1,35 @@
+{
+  "source_revision": "b6a555c8134581305d0ed4716fbc192860e0b88c",
+  "scope": "Entire CC BY2.0/BY-SA2.0 eligible official cohort; full official dataset includes other license categories",
+  "coverage": {
+    "train": {
+      "official_videos": 8511,
+      "official_queries": 33005,
+      "license_eligible_videos": 2165,
+      "selected_videos": 2165
+    },
+    "val": {
+      "official_videos": 1094,
+      "official_queries": 4180,
+      "license_eligible_videos": 321,
+      "selected_videos": 321
+    },
+    "test": {
+      "official_videos": 1037,
+      "official_queries": 4021,
+      "license_eligible_videos": 201,
+      "selected_videos": 201
+    }
+  },
+  "sampling_cap": null,
+  "historical_selection_file_sha256": "b5d0d7934c8a77782e6f9c6f0e2925ea33bc62e312284ac848142f9bcbf4353c",
+  "historical_download_rejections": {
+    "complete": 486,
+    "Invalid source video filename": 2200,
+    "HTTP Error 404: Not Found": 1
+  },
+  "defect": "2200 source filenames retained original non-MP4 suffixes; old safety guard rejected them before HTTP. AWS transcoded media are MP4 regardless of original suffix. These were not verified remote availability failures.",
+  "fix": "Accept safe original basename with alphanumeric extension, retaining traversal/stream/path rejection. Download every eligible source, all valid official human queries; no sampling default.",
+  "new_download": "running; final available/valid counts not yet known",
+  "historical_subset_scores": "Not entire-dataset results; expanded test overlaps earlier observed subset and must disclose that exposure."
+}

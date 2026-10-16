@@ -1,0 +1,20 @@
+{
+  "status": "prospective_before_corrected_full_cohort_download_encoding_or_fits",
+  "reason": "User requests entire datasets where possible. The earlier MP4-only basename guard incorrectly rejected 2200 eligible official source names before network access.",
+  "official_source_revision": "b6a555c8134581305d0ed4716fbc192860e0b88c",
+  "official": {
+    "train": {"videos": 8511, "queries": 33005},
+    "val": {"videos": 1094, "queries": 4180},
+    "test": {"videos": 1037, "queries": 4021}
+  },
+  "license_eligible_videos": {"train": 2165, "val": 321, "test": 201},
+  "selection": "All eligible official IDs; no count cap, caption filtering or score-based replacement. Preserve official splits.",
+  "license_scope": "CC BY 2.0 and CC BY-SA 2.0 with source attribution. This is the entire eligible cohort, not the entire official benchmark; other license categories remain excluded.",
+  "ingestion": "Safe original basenames allow original upload extensions; AWS supplies MP4 bytes. Four network workers. Record every failure, hash and decoder geometry. Retain all valid available media and all corresponding human queries.",
+  "integrity": "Coalesce within-split exact-media aliases retaining all queries. Resolve any cross-split identical media before fitting using a documented source-only policy. Never pad malformed decoder geometry or change temporal targets.",
+  "prior_results": "Earlier 364/73/47-video results are historical subset results. The 161-query prior test is observed and overlaps the expanded test; expanded evaluation cannot be described as wholly fresh or blind.",
+  "training": "Rebuild all cached features and retrain prespecified adapters on the corrected complete available eligible cohort. Retain pretrained baseline. Use every validation query; no evaluation sampling.",
+  "selection_rule": "Primary corpus consensus R@1 IoU>=0.5, minimum absolute gain0.01; within-video mIoU drop <=0.01. Same phase-1 and conditional followup configuration grids, three seeds, fixed cosine mixture weights, unchanged stopping and tie rules.",
+  "evaluation": "Freeze final expanded-cohort choice before any new test predictions. Evaluate every query for every retained test video once; report exact official/eligible/available/valid counts and prior test exposure. Do not tune on expanded or historical test results.",
+  "publication": "Do not promote historical subset scores as entire-dataset results. Publish current coverage and measured completed full-available-cohort results with explicit licensing/access/quality exclusions. No raw media, captions or weights in Git."
+}

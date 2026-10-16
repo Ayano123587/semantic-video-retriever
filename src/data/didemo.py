@@ -41,7 +41,7 @@ def fetch_metadata(directory='data/external/didemo'):
             'revision': REVISION, 'sha256': hashes}
 
 
-def selection(directory='data/external/didemo', output='data/interim/didemo-selection.json', counts=(500,50,100)):
+def selection(directory='data/external/didemo', output='data/interim/didemo-full-selection.json', counts=None):
     """Read video IDs for staging only; no caption text or target score is used."""
     provenance = fetch_metadata(directory)
     directory = Path(directory)
@@ -54,16 +54,20 @@ def selection(directory='data/external/didemo', output='data/interim/didemo-sele
     allowed = {'http://creativecommons.org/licenses/by/2.0/',
                'http://creativecommons.org/licenses/by-sa/2.0/'}
     selected, official_sets = {}, {}
-    if len(counts)!=3 or any(type(n) is not int or n<1 for n in counts):
+    if counts is not None and (len(counts)!=3 or any(type(n) is not int or n<1 for n in counts)):
         raise ValueError('Positive integer source-selection counts required')
-    for split, count in zip(('train','val','test'),counts):
+    coverage = {}
+    for split, count in zip(('train','val','test'),counts or (None,None,None)):
         rows = json.loads((directory/f'{split}_data.json').read_text(encoding='utf-8'))
         official_sets[split] = {row['video'] for row in rows}
         candidates = [name for name in official_sets[split]
                       if licenses.get(name.split('_')[1],{}).get('license') in allowed]
         candidates.sort(key=lambda name: hashlib.sha256(name.encode('utf-8')).hexdigest())
+        coverage[split] = {'official_videos':len(official_sets[split]),
+                           'official_queries':len(rows),'license_eligible_videos':len(candidates),
+                           'selected_videos':len(candidates if count is None else candidates[:count])}
         selected[split] = []
-        for name in candidates[:count]:
+        for name in candidates if count is None else candidates[:count]:
             identifier = name.split('_')[1]
             checksum = hashes[identifier]
             selected[split].append({'video':name, 'id':identifier, **licenses[identifier],
@@ -72,6 +76,10 @@ def selection(directory='data/external/didemo', output='data/interim/didemo-sele
         raise ValueError('Official video split overlap')
     result = {'source': provenance, 'selection':'SHA256 name order; CC BY2.0/BY-SA2.0 only; no score/caption filtering',
               'splits': selected, 'test_gold_used_for_selection': False}
+    if counts is None:
+        result['coverage'] = coverage
+        result['sampling_cap'] = None
+        result['scope'] = 'Every license-eligible official video; not every official license category'
     destination = Path(output)
     destination.parent.mkdir(parents=True, exist_ok=True)
     if destination.exists():
@@ -85,7 +93,9 @@ def selection(directory='data/external/didemo', output='data/interim/didemo-sele
 def download_one(record, directory='data/raw/didemo'):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
-    if not re.fullmatch(r'[A-Za-z0-9@_-]+\.mp4',record['video']):
+    # The official names preserve original upload extensions, while AWS serves
+    # transcoded MP4 bytes. Validate a safe basename, not one particular suffix.
+    if not re.fullmatch(r'[A-Za-z0-9@_-]+\.[A-Za-z0-9]{1,10}',record['video']):
         raise ValueError('Invalid source video filename')
     path = directory/record['video']
     if not path.exists():
@@ -162,10 +172,14 @@ if __name__ == '__main__':
     parser.add_argument('--probe',action='store_true')
     parser.add_argument('--download',action='store_true')
     parser.add_argument('--expanded',action='store_true',help='Prospectively expanded availability cohort; no label/score filtering')
+    parser.add_argument('--sample',action='store_true',help='Explicit historical small diagnostic cohort; not a full benchmark')
     args=parser.parse_args()
-    result = selection(output='data/interim/didemo-expanded-selection.json',counts=(3000,500,500)) if args.expanded else selection()
+    if args.expanded and args.sample:parser.error('Choose one historical sampling mode')
+    result = (selection(output='data/interim/didemo-expanded-selection.json',counts=(3000,500,500)) if args.expanded else
+              selection(output='data/interim/didemo-selection.json',counts=(500,50,100)) if args.sample else selection())
     if args.download:
-        download_all(result,output='data/interim/didemo-expanded-downloads' if args.expanded else 'data/interim/didemo-downloads')
+        download_all(result,output='data/interim/didemo-expanded-downloads' if args.expanded else
+                     'data/interim/didemo-downloads' if args.sample else 'data/interim/didemo-full-downloads')
     elif args.probe:
         print(json.dumps(download_one(result['splits']['train'][0]),indent=2))
     else:

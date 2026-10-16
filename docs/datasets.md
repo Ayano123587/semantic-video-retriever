@@ -7,8 +7,8 @@ within official splits using verified CC BY 2.0 or CC BY-SA 2.0 metadata.
 Per-video attribution, license and media hashes remain with the private source records;
 footage and descriptions are not redistributed in this repository.
 
-The verified available cohort contains 364 training videos/1,390 queries,
-73 validation videos/261 queries and 47 test videos. Download availability, exact-media
+The historical first cohort contains 364 training videos/1,390 queries,
+73 validation videos/261 queries and 47 test videos. The MP4-only filename defect excluded 2,200 eligible sources before HTTP; these were not established access failures. Corrected ingestion now attempts every eligible source. Exact-media
 aliases and one invalid training video's geometry are recorded in the source and decoder
 preflight receipts. Test descriptions and temporal targets are absent from the training
 cache. This filtered cohort is not the full official benchmark.
@@ -34,3 +34,5 @@ benchmark. Separate soundtrack files are not collected.
 Raw data, feature arrays and weights remain ignored. Published notebooks expose
 aggregate results and algorithms; model pretraining overlap and near-duplicate videos
 cannot be ruled out by exact media hashes.
+
+The complete official source has 33,005 training, 4,180 validation and 4,021 test queries across 8,511/1,094/1,037 videos. The current license scope admits 2,165/321/201 videos respectively. All are selected; final download and decoder-valid counts are pending. See [coverage audit](full-coverage-audit.json).
