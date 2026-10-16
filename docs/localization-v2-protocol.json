@@ -1,0 +1,55 @@
+{
+  "status": "prespecified_before_followup_fits_or_scores",
+  "hypothesis": "Global contrastive adaptation improved video identification but reduced temporal localization; add a conditional within-video contrastive term.",
+  "source_manifest_sha256": "8b97485f9dcc1ad243103b0cc4298c82cc3f20ceafa52cad863d6d050f53a3df",
+  "cohort": "same364train/73validation/47test-media;1390train261validationqueries;no testquery or target access",
+  "architecture": "unchanged512->64->512 residual text adapter, zero-initialized up projection, frozen pinned CLIP",
+  "optimizer": {
+    "name": "AdamW",
+    "lr": 0.0003,
+    "weight_decay": 0.01,
+    "temperature": 0.07,
+    "batch": 64
+  },
+  "loss": "global multi-positive contrastive loss + lambda * same-video conditional multi-positive contrastive loss",
+  "local_loss_weights": [
+    0,
+    0.5,
+    1,
+    2
+  ],
+  "seeds": [
+    42,
+    1337,
+    2026
+  ],
+  "epochs": {
+    "maximum": 50,
+    "minimum": 5,
+    "patience": 8,
+    "selection": "per-seed validation primary; earliest exact ties"
+  },
+  "inference": "equal-seed mean cosine; fixed convex mix with frozen CLIP scores",
+  "adapted_score_weights": [
+    0.25,
+    0.5,
+    0.75,
+    1
+  ],
+  "primary": "custom corpus consensus R@1 IoU>=.5; correctvideo required",
+  "promotion": {
+    "minimum_absolute_primary_gain_over_frozen_clip": 0.01,
+    "maximum_within_video_miou_drop": 0.01
+  },
+  "baseline": {
+    "corpus_consensus_r1_iou50": 0.1532567049808429,
+    "within_video_official_miou": 0.37690506598552576
+  },
+  "ties": "retain baseline unless eligible; otherwise earlier lambda then smaller adapted score weight",
+  "compute": "cached-head CPU;2threads;framework recorded;matchedlambda0control distinguishes runtime changes",
+  "limits": [
+    "Same validation reused for stopping and selection; no optimum claim.",
+    "No video IDs/timestamps as learned inputs.",
+    "All fitted configurations and failures retained; no test-driven search."
+  ]
+}

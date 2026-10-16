@@ -2,11 +2,17 @@
   "notebooks": [
     {
       "notebook": "notebooks/00_main_video_retrieval.ipynb",
-      "seconds": 71.51,
-      "executed_code_cells": 12,
+      "seconds": 40.94,
+      "executed_code_cells": 14,
       "visible_plots": 1,
-      "actual_tables": 4,
-      "normalized_utf8_sha256": "36e9d328359115cd32ceb10f286cc15869b559f3ae054bd6578a52f72f4a2bb9"
+      "actual_tables": 5,
+      "normalized_utf8_sha256": "d00ac1c31c1e5ca5b6f022f0c5a270c1d37298eaed5c6283a21d655979f4faae",
+      "phase2_new_cell_indices": [
+        21,
+        22
+      ],
+      "phase2_new_cell_seconds": 49.47,
+      "execution_mode": "Phase2 cells newly executed in fresh kernel; earlier genuinely executed outputs retained, not rerun"
     },
     {
       "notebook": "notebooks/01_real_source_eda.ipynb",
@@ -18,15 +24,21 @@
     },
     {
       "notebook": "notebooks/02_experiments_and_errors.ipynb",
-      "seconds": 26.25,
-      "executed_code_cells": 4,
-      "visible_plots": 1,
-      "actual_tables": 3,
-      "normalized_utf8_sha256": "e9ba017ff0fc6b6aaa50f5d5b42604dd4d3df4b04be1df6fd860b870049d7eb9"
+      "seconds": 21.73,
+      "executed_code_cells": 7,
+      "visible_plots": 5,
+      "actual_tables": 7,
+      "normalized_utf8_sha256": "5782ed4ca9c6e60502b3079a38b629cbd43a0e5a83203004533d4d47f3f21dee",
+      "phase2_new_cell_indices": [
+        10,
+        11
+      ],
+      "phase2_new_cell_seconds": 32.59,
+      "execution_mode": "Phase2 cells newly executed in fresh kernel; earlier genuinely executed outputs retained, not rerun"
     }
   ],
   "test_descriptions_or_targets_opened": false,
   "local_CLIP_allocation": false,
-  "training": "Actual two-query smoke checkpoint replay only; full study pending",
+  "training": "Recorded21actualfit histories/16phase2policies; newly executed full-cache selected-checkpoint validation replay; no test scoring",
   "public_outputs": "Aggregates, hashes and timestamp geometry only; no captions/media/weights"
 }
