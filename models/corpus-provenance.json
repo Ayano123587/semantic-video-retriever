@@ -1,0 +1,20 @@
+[
+  {
+    "file": "elephants-dream.mp4",
+    "url": "https://raw.githubusercontent.com/chintan9/Big-Buck-Bunny/915c4b2aba75614b20dec3852375b394bb305f10/ElephantsDream.mp4",
+    "sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+    "license": "CC-BY-2.5",
+    "attribution": "(c) copyright 2006, Blender Foundation / Netherlands Media Art Institute / www.elephantsdream.org",
+    "license_source": "https://orange.blender.org/",
+    "scope": "37-second excerpt"
+  },
+  {
+    "file": "sintel-trailer.mp4",
+    "url": "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    "sha256": "b670602fa00934ca27c4351bb0efe7ea7a07fae57284e44226025eeed7c51254",
+    "license": "CC-BY-3.0",
+    "attribution": "copyright Blender Foundation | www.sintel.org",
+    "license_source": "https://durian.blender.org/sharing/",
+    "scope": "52-second trailer"
+  }
+]

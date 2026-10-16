@@ -1,0 +1,1 @@
+"""Semantic video retrieval pipeline."""

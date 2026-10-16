@@ -1,0 +1,174 @@
+{
+  "queries": 4,
+  "hit_at_1": 1.0,
+  "hit_at_3": 1.0,
+  "scope": "4 manually annotated queries on one 30-second CC-BY excerpt; descriptive demo, no claim of benchmark generalization",
+  "model": {
+    "model_id": "openai/clip-vit-base-patch32",
+    "model_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "embedding_dim": 512,
+    "sample_interval_seconds": 2.0,
+    "sampled_frames": 15,
+    "indexed_frames": 13,
+    "dedup_threshold": 0.985,
+    "sources": [
+      {
+        "video": "big-buck-bunny.mp4",
+        "sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+        "bytes": 5635415
+      }
+    ],
+    "method": "pretrained CLIP exact cosine; sampled RGB-change shot heuristic; no task-specific training",
+    "vectors_sha256": "1a78e61f368586657e353837654f19b1cdc26d98df077c79a953b4322ae35866"
+  },
+  "results": [
+    {
+      "query": "Pink clouds above green trees and a grassy meadow",
+      "relevant_intervals_seconds": [
+        [
+          2,
+          10
+        ]
+      ],
+      "results": [
+        {
+          "frame_number": 96,
+          "timestamp_seconds": 4.0,
+          "scene_id": 1,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.3174835443496704
+        },
+        {
+          "frame_number": 192,
+          "timestamp_seconds": 8.0,
+          "scene_id": 1,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.30308014154434204
+        },
+        {
+          "frame_number": 288,
+          "timestamp_seconds": 12.0,
+          "scene_id": 2,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.23484918475151062
+        }
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "query": "A stream of water surrounded by grass and flowers",
+      "relevant_intervals_seconds": [
+        [
+          12,
+          14
+        ]
+      ],
+      "results": [
+        {
+          "frame_number": 288,
+          "timestamp_seconds": 12.0,
+          "scene_id": 2,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.33168482780456543
+        },
+        {
+          "frame_number": 576,
+          "timestamp_seconds": 24.0,
+          "scene_id": 4,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.2204037308692932
+        },
+        {
+          "frame_number": 192,
+          "timestamp_seconds": 8.0,
+          "scene_id": 1,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.21944507956504822
+        }
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "query": "An animated bird singing on a tree branch",
+      "relevant_intervals_seconds": [
+        [
+          16,
+          20
+        ]
+      ],
+      "results": [
+        {
+          "frame_number": 384,
+          "timestamp_seconds": 16.0,
+          "scene_id": 3,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.33825039863586426
+        },
+        {
+          "frame_number": 480,
+          "timestamp_seconds": 20.0,
+          "scene_id": 3,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.32430484890937805
+        },
+        {
+          "frame_number": 48,
+          "timestamp_seconds": 2.0,
+          "scene_id": 1,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.25221240520477295
+        }
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "query": "A large tree with a dark hollow at its base",
+      "relevant_intervals_seconds": [
+        [
+          24,
+          30
+        ]
+      ],
+      "results": [
+        {
+          "frame_number": 576,
+          "timestamp_seconds": 24.0,
+          "scene_id": 4,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.29008522629737854
+        },
+        {
+          "frame_number": 0,
+          "timestamp_seconds": 0.0,
+          "scene_id": 0,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.25159186124801636
+        },
+        {
+          "frame_number": 192,
+          "timestamp_seconds": 8.0,
+          "scene_id": 1,
+          "video": "big-buck-bunny.mp4",
+          "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+          "cosine_similarity": 0.2371695339679718
+        }
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true
+    }
+  ]
+}

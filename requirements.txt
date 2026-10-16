@@ -1,0 +1,7 @@
+numpy>=2,<3
+pillow>=10,<13
+imageio>=2.36,<3
+imageio-ffmpeg>=0.6,<1
+torch>=2.6,<3
+transformers>=4.57,<5
+pytest>=8,<10

@@ -1,0 +1,892 @@
+{
+  "selection_protocol": "validation Hit@1 then Hit@3; ties favor interval2 and raw query",
+  "validation_annotations_sha256": "a388ae8130b2e9a6e12abf3967486edf772999b297cadb2e453585f90349eb61",
+  "test_annotations_sha256": "d1b223061f79032e3af562dc22bea2c0d07d9d4eeaaf421a462903c3de2568f3",
+  "winner": {
+    "interval": 2,
+    "prefix": ""
+  },
+  "runs": [
+    {
+      "interval": 2,
+      "prefix": "",
+      "metrics": {
+        "hit_at_1": 0.875,
+        "hit_at_3": 1.0,
+        "mrr_at_3": 0.9166666666666666
+      },
+      "rankings": [
+        [
+          {
+            "frame_number": 96,
+            "timestamp_seconds": 4.0,
+            "scene_id": 1,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.3174835443496704
+          },
+          {
+            "frame_number": 192,
+            "timestamp_seconds": 8.0,
+            "scene_id": 1,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.30308014154434204
+          },
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.23484918475151062
+          }
+        ],
+        [
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.33168482780456543
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 4,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2204037308692932
+          },
+          {
+            "frame_number": 192,
+            "timestamp_seconds": 8.0,
+            "scene_id": 1,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.21944507956504822
+          }
+        ],
+        [
+          {
+            "frame_number": 384,
+            "timestamp_seconds": 16.0,
+            "scene_id": 3,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.33825039863586426
+          },
+          {
+            "frame_number": 480,
+            "timestamp_seconds": 20.0,
+            "scene_id": 3,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.32430484890937805
+          },
+          {
+            "frame_number": 48,
+            "timestamp_seconds": 2.0,
+            "scene_id": 1,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.25221240520477295
+          }
+        ],
+        [
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 4,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.29008522629737854
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.25159186124801636
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.25159186124801636
+          }
+        ],
+        [
+          {
+            "frame_number": 384,
+            "timestamp_seconds": 16.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.34022393822669983
+          },
+          {
+            "frame_number": 528,
+            "timestamp_seconds": 22.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.29589104652404785
+          },
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.29296380281448364
+          }
+        ],
+        [
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.23659712076187134
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.23659712076187134
+          },
+          {
+            "frame_number": 480,
+            "timestamp_seconds": 20.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.22958225011825562
+          }
+        ],
+        [
+          {
+            "frame_number": 336,
+            "timestamp_seconds": 14.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.22917501628398895
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.20824860036373138
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.20824860036373138
+          }
+        ],
+        [
+          {
+            "frame_number": 672,
+            "timestamp_seconds": 28.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2593386173248291
+          },
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.24338398873806
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.23642794787883759
+          }
+        ]
+      ],
+      "index_manifest_sha256": "b3a9fd7751badbaf0a3b690135f868a92b4305d4589014a14bcf11d784cc5a6f"
+    },
+    {
+      "interval": 2,
+      "prefix": "a video frame of ",
+      "metrics": {
+        "hit_at_1": 0.875,
+        "hit_at_3": 1.0,
+        "mrr_at_3": 0.9375
+      },
+      "rankings": [
+        [
+          {
+            "frame_number": 144,
+            "timestamp_seconds": 6.0,
+            "scene_id": 1,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.3284637928009033
+          },
+          {
+            "frame_number": 48,
+            "timestamp_seconds": 2.0,
+            "scene_id": 1,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.3247121572494507
+          },
+          {
+            "frame_number": 240,
+            "timestamp_seconds": 10.0,
+            "scene_id": 1,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.32028791308403015
+          }
+        ],
+        [
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.35675668716430664
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 4,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2630368769168854
+          },
+          {
+            "frame_number": 48,
+            "timestamp_seconds": 2.0,
+            "scene_id": 1,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2460273802280426
+          }
+        ],
+        [
+          {
+            "frame_number": 384,
+            "timestamp_seconds": 16.0,
+            "scene_id": 3,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.33289167284965515
+          },
+          {
+            "frame_number": 480,
+            "timestamp_seconds": 20.0,
+            "scene_id": 3,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.3140951693058014
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 4,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2512173652648926
+          }
+        ],
+        [
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 4,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.30103135108947754
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2692371904850006
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2692371904850006
+          }
+        ],
+        [
+          {
+            "frame_number": 384,
+            "timestamp_seconds": 16.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.34424495697021484
+          },
+          {
+            "frame_number": 528,
+            "timestamp_seconds": 22.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.3070790767669678
+          },
+          {
+            "frame_number": 672,
+            "timestamp_seconds": 28.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.3008667826652527
+          }
+        ],
+        [
+          {
+            "frame_number": 384,
+            "timestamp_seconds": 16.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.254349946975708
+          },
+          {
+            "frame_number": 480,
+            "timestamp_seconds": 20.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2535235285758972
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2522035539150238
+          }
+        ],
+        [
+          {
+            "frame_number": 336,
+            "timestamp_seconds": 14.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.26059550046920776
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.22510457038879395
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.22510457038879395
+          }
+        ],
+        [
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.25619950890541077
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.25582051277160645
+          },
+          {
+            "frame_number": 672,
+            "timestamp_seconds": 28.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2539069950580597
+          }
+        ]
+      ],
+      "index_manifest_sha256": "b3a9fd7751badbaf0a3b690135f868a92b4305d4589014a14bcf11d784cc5a6f"
+    },
+    {
+      "interval": 1,
+      "prefix": "",
+      "metrics": {
+        "hit_at_1": 0.875,
+        "hit_at_3": 1.0,
+        "mrr_at_3": 0.9166666666666666
+      },
+      "rankings": [
+        [
+          {
+            "frame_number": 72,
+            "timestamp_seconds": 3.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.3179877698421478
+          },
+          {
+            "frame_number": 168,
+            "timestamp_seconds": 7.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.307259738445282
+          },
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 3,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2348492443561554
+          }
+        ],
+        [
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 3,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.3316848874092102
+          },
+          {
+            "frame_number": 72,
+            "timestamp_seconds": 3.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2215312272310257
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 5,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2204037308692932
+          }
+        ],
+        [
+          {
+            "frame_number": 384,
+            "timestamp_seconds": 16.0,
+            "scene_id": 4,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.33825039863586426
+          },
+          {
+            "frame_number": 480,
+            "timestamp_seconds": 20.0,
+            "scene_id": 4,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.32430484890937805
+          },
+          {
+            "frame_number": 168,
+            "timestamp_seconds": 7.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2527933120727539
+          }
+        ],
+        [
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 5,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.29008522629737854
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.25159186124801636
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.25159186124801636
+          }
+        ],
+        [
+          {
+            "frame_number": 408,
+            "timestamp_seconds": 17.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.34474432468414307
+          },
+          {
+            "frame_number": 528,
+            "timestamp_seconds": 22.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.29589104652404785
+          },
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.29296380281448364
+          }
+        ],
+        [
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.23659712076187134
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.23659712076187134
+          },
+          {
+            "frame_number": 480,
+            "timestamp_seconds": 20.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.22958225011825562
+          }
+        ],
+        [
+          {
+            "frame_number": 336,
+            "timestamp_seconds": 14.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.22917501628398895
+          },
+          {
+            "frame_number": 216,
+            "timestamp_seconds": 9.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.21477803587913513
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.20824860036373138
+          }
+        ],
+        [
+          {
+            "frame_number": 696,
+            "timestamp_seconds": 29.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.27439260482788086
+          },
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2433840036392212
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.23642794787883759
+          }
+        ]
+      ],
+      "index_manifest_sha256": "3f7c7134a1aeac74cf8801a6874d8d4942e06ad585740986a737efc0027e7087"
+    },
+    {
+      "interval": 1,
+      "prefix": "a video frame of ",
+      "metrics": {
+        "hit_at_1": 0.875,
+        "hit_at_3": 1.0,
+        "mrr_at_3": 0.9375
+      },
+      "rankings": [
+        [
+          {
+            "frame_number": 168,
+            "timestamp_seconds": 7.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.330854207277298
+          },
+          {
+            "frame_number": 48,
+            "timestamp_seconds": 2.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.3247121572494507
+          },
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 3,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.27632084488868713
+          }
+        ],
+        [
+          {
+            "frame_number": 288,
+            "timestamp_seconds": 12.0,
+            "scene_id": 3,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.35675668716430664
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 5,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2630368769168854
+          },
+          {
+            "frame_number": 168,
+            "timestamp_seconds": 7.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.25004544854164124
+          }
+        ],
+        [
+          {
+            "frame_number": 456,
+            "timestamp_seconds": 19.0,
+            "scene_id": 4,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.33358171582221985
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 5,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2512173652648926
+          },
+          {
+            "frame_number": 168,
+            "timestamp_seconds": 7.0,
+            "scene_id": 2,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2500229477882385
+          }
+        ],
+        [
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 5,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.30103135108947754
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.2692371904850006
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2692371904850006
+          }
+        ],
+        [
+          {
+            "frame_number": 408,
+            "timestamp_seconds": 17.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.34968873858451843
+          },
+          {
+            "frame_number": 528,
+            "timestamp_seconds": 22.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.3070790469646454
+          },
+          {
+            "frame_number": 672,
+            "timestamp_seconds": 28.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.3008668124675751
+          }
+        ],
+        [
+          {
+            "frame_number": 216,
+            "timestamp_seconds": 9.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2603750228881836
+          },
+          {
+            "frame_number": 384,
+            "timestamp_seconds": 16.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.254349946975708
+          },
+          {
+            "frame_number": 480,
+            "timestamp_seconds": 20.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2535235285758972
+          }
+        ],
+        [
+          {
+            "frame_number": 336,
+            "timestamp_seconds": 14.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.26059550046920776
+          },
+          {
+            "frame_number": 216,
+            "timestamp_seconds": 9.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.25274941325187683
+          },
+          {
+            "frame_number": 0,
+            "timestamp_seconds": 0.0,
+            "scene_id": 0,
+            "video": "big-buck-bunny.mp4",
+            "video_sha256": "84abe3ddf1938f0a6053cf6cc7874434177cdce927ba07d603cdd84c4c67a6ab",
+            "cosine_similarity": 0.22510457038879395
+          }
+        ],
+        [
+          {
+            "frame_number": 696,
+            "timestamp_seconds": 29.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.30516383051872253
+          },
+          {
+            "frame_number": 216,
+            "timestamp_seconds": 9.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.2588544487953186
+          },
+          {
+            "frame_number": 576,
+            "timestamp_seconds": 24.0,
+            "scene_id": 0,
+            "video": "elephants-dream.mp4",
+            "video_sha256": "5e77a77fbcb73ed2f1f2ff6b9361f2d9867de1390f5256ccfcce6ed755d9e704",
+            "cosine_similarity": 0.25582051277160645
+          }
+        ]
+      ],
+      "index_manifest_sha256": "3f7c7134a1aeac74cf8801a6874d8d4942e06ad585740986a737efc0027e7087"
+    }
+  ],
+  "test_evaluated": false
+}
