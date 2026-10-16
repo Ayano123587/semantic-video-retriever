@@ -68,3 +68,15 @@ GPU quota is exhausted. There is no user-imposed training-duration cap; the norm
 reload smoke before the full job, and plain mounted Python modules, never encoded
 source literals. Extraction may include test media only; test query features are
 created only after final selection and deliberate label release.
+
+
+## Decoder availability amendment (before model comparison)
+
+Full CPU version1 stopped at the third training video: metadata declares six
+bins but the actual source duration is24.17seconds. No model was trained and no
+retrieval metric was computed. A complete metadata/decoder preflight inspected
+all485unique sources; only this training source fails the frozen duration rule.
+Exclude that whole video and all its queries, preserving the original source
+and failed log privately. All73validation and47test sources pass and remain
+unchanged. The revised cohort is frozen in data/processed/didemo-v2; no fabricated
+padding, target remapping, relaxed promotion threshold or outcome-based replacement.

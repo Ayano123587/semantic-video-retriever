@@ -10,3 +10,7 @@ dist/
 *.npy
 *.npz
 *.mp4
+
+*.pt
+*.pth
+*.safetensors

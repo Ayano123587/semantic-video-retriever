@@ -10,15 +10,15 @@
   "receipt_sha256": "cd32757336420ec36251d168e956944427cabcbdd51f5f6af8a8e6655937d373",
   "selection_file_sha256": "b5d0d7934c8a77782e6f9c6f0e2925ea33bc62e312284ac848142f9bcbf4353c",
   "files": {
-    "train.json": "f0e0c3c60a76de9ae3fb8bbd4f88c65708736eda8ebc0324a16913a0e56f4bfc",
+    "train.json": "c8edd1601e7e907bdbb687e33a83082236ef94f79f2bf9bd859e1731a512c5f8",
     "val.json": "344b24bbf98af4ffbf96a368fb06fd2b1e3f43faab0d55cd8f42d8c12e996495",
-    "media.json": "f0a3b186ae856befd3586e1e2ba3d04a1cdaa1e2519b79ebc3356383af978cb3"
+    "media.json": "c4f5af8ce190151f80e70097c5cd35a9deb53b5bb1d396defaf618274df65261"
   },
   "counts": {
     "train": {
-      "source_video_ids": 365,
-      "unique_media": 365,
-      "queries": 1393,
+      "source_video_ids": 364,
+      "unique_media": 364,
+      "queries": 1390,
       "test_targets_staged": false
     },
     "val": {
@@ -35,6 +35,10 @@
     }
   },
   "raw_media_redistributed": false,
+  "decoder_preflight_sha256": "493ff1fed75bb47e9748eeb8b1af64c7f0a7624fe178b9139a1af72e59765d30",
+  "excluded_decoder_media_sha256": [
+    "9dad6e10888e23bc560573c66f143e6005250a66612cdc2a4f383e0aaa79ec44"
+  ],
   "within_split_alias_copies": 1,
   "alias_policy": "same-SHA video IDs coalesced; all human queries retained",
   "test_target_policy": "test JSON read only for video geometry; captions/intervals never staged",
