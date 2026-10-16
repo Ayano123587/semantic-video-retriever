@@ -24,6 +24,16 @@ hyperparameter grid and stopping rules after source/access preflight but before
 the first model comparison. Test is opened once after final validation selection.
 Multiple annotations/overlapping moments must not become false contrastive negatives.
 
+Access preflight succeeded on the first deterministic training video (4.14MB),
+using the official AWS media mapping. Restrict the initial cohort to CC BY2.0 and
+CC BY-SA2.0 videos with attached public source attribution. Downloads use four
+workers and retain failed IDs/partial bytes privately; no replacements. A128MiB
+per-source safety limit is an explicit availability filter, not a GPU budget.
+Verify exact media hashes across splits before training. Require at least100train,
+20validation and40test available videos for this study; otherwise revise the
+access plan transparently before model scoring. Metadata parsing stages IDs/gold
+privately in advance; human inspection/model choice never uses test captions/gold.
+
 Source: [official DiDeMo repository](https://github.com/LisaAnne/LocalizingMoments),
 revision b6a555c8134581305d0ed4716fbc192860e0b88c. Video-specific CC license and
 attribution remain attached privately; no footage or captions are redistributed.

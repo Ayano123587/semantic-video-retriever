@@ -42,7 +42,7 @@ The four-query first diagnostic is supplemented by a controlled movie-held-out s
 
 Coarse sampling can miss short scenes; sampled shot IDs are a heuristic rather than frame-perfect scene detection. Static CLIP features may miss temporal relations, complex actions, negation and small objects. Encoding truncates long text to CLIP's token limit. Variable-frame-rate videos may have approximate timestamps because this reader uses reported average FPS; constant-frame-rate media are recommended when exact seek alignment matters. The current index is rebuilt rather than incrementally updated, and search is linear in frame count. Use only footage you are authorized to process.
 
-`notebooks/` contains sampling EDA only. Production indexing and evaluation live in `src/`; CI runs isolated unit tests without downloading model weights or media.
+`notebooks/` contains sampling EDA and a complete runnable retrieval walkthrough. Production indexing and evaluation live in `src/`; CI runs isolated unit tests without downloading model weights or media.
 
 ## Controlled movie-held-out study
 
@@ -56,3 +56,7 @@ video-search "Wide rolling sand dunes in a desert" --index data/processed/heldou
 ```
 
 The checked-in selection chooses interval2 and raw query. The final test output is preserved in `models/heldout-evaluation.json`; the test runner refuses to overwrite it. A new independent test set is required for future tuning studies. Index building uses pretrained CLIP rather than learning new model parameters. Use separate virtual environments for these repositories because the requested layout exposes a package named `src`.
+
+## Runnable notebook
+
+Open [the complete workflow](notebooks/02_retrieval_workflow.ipynb) for real-data preparation, production-module execution, saved artifacts, and results plots. Expensive execution is explicit; recorded results are labeled and held-out evaluation is not automatically repeated.
