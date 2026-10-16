@@ -1,0 +1,32 @@
+{
+  "notebooks": [
+    {
+      "notebook": "notebooks/00_main_video_retrieval.ipynb",
+      "seconds": 71.51,
+      "executed_code_cells": 12,
+      "visible_plots": 1,
+      "actual_tables": 4,
+      "normalized_utf8_sha256": "36e9d328359115cd32ceb10f286cc15869b559f3ae054bd6578a52f72f4a2bb9"
+    },
+    {
+      "notebook": "notebooks/01_real_source_eda.ipynb",
+      "seconds": 18.42,
+      "executed_code_cells": 5,
+      "visible_plots": 3,
+      "actual_tables": 2,
+      "normalized_utf8_sha256": "e83ed61f02213cb72d0cc4fedccda2b6b9353d55901e4577bd6f03d53c1a8706"
+    },
+    {
+      "notebook": "notebooks/02_experiments_and_errors.ipynb",
+      "seconds": 26.25,
+      "executed_code_cells": 4,
+      "visible_plots": 1,
+      "actual_tables": 3,
+      "normalized_utf8_sha256": "e9ba017ff0fc6b6aaa50f5d5b42604dd4d3df4b04be1df6fd860b870049d7eb9"
+    }
+  ],
+  "test_descriptions_or_targets_opened": false,
+  "local_CLIP_allocation": false,
+  "training": "Actual two-query smoke checkpoint replay only; full study pending",
+  "public_outputs": "Aggregates, hashes and timestamp geometry only; no captions/media/weights"
+}

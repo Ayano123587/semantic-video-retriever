@@ -1,62 +1,46 @@
 # Semantic Video Retriever
 
-Find timestamped visual moments in video with a natural-language query. This pipeline samples frames, embeds them using **real pretrained OpenAI CLIP ViT-B/32 weights**, persists a normalized NumPy vector index, and returns cosine-ranked timestamps with temporal nonmax suppression. The model is pinned to an immutable Hugging Face revision; no randomly initialized encoder or metadata-only search is used.
+Find timestamped moments in real video using a natural-language description. A pinned CLIP image/text encoder supplies frozen features; contiguous five-second moments are ranked by cosine similarity. The current DiDeMo study trains a residual text adapter from real human descriptions and temporal references, with validation-only model selection.
 
-## Run the real demo
+Full adapter training is running. No full DiDeMo validation or test score is available yet. The completed readiness check encoded two real videos, trained on two real queries and reproduced the saved checkpoint exactly. Its loss decrease is a mechanics check, not evidence of generalization.
 
-```sh
+## Run
+
+Create a separate virtual environment for this repository. These projects share a package named `src`; installing them together is unsupported.
+
+```powershell
 python -m venv .venv
-# Activate .venv for your shell, then:
+.\.venv\Scripts\Activate.ps1
 python -m pip install -e ".[dev]"
 python -m src.data.make_dataset
 python -m src.models.train_model data/raw/big-buck-bunny.mp4
 python -m src.models.predict_model "An animated bird singing on a tree branch"
-python -m src.models.evaluate
 python -m pytest -q
 ```
 
-The first model download is approximately 605 MB; CPU inference on the 30-second sample is sufficient. `train_model` follows the requested repository naming convention but **builds an index using pretrained weights; it does not train a new CLIP model**. Index vectors and downloaded video remain in ignored `data/`; small provenance/evaluation summaries are committed in `models/`.
+On Linux/macOS use `source .venv/bin/activate`. This small CC-BY movie demo builds an index with pretrained CLIP; `train_model` does not fine-tune it. The separate DiDeMo adapter study performs actual parameter training. The first CLIP download is approximately 605 MB.
 
-Index your own licensed footage or multiple files:
-
-```sh
-video-index path/to/clip1.mp4 path/to/clip2.mp4 --output data/processed/my-index --interval 2 --device cpu
-video-search "dramatic sword clash in the rain" --index data/processed/my-index --top-k 5 --suppress-seconds 4
+```powershell
+video-index path/to/licensed-video.mp4 --output data/processed/my-index --interval 2 --device cpu
+video-search "person opening a door" --index data/processed/my-index --top-k 5 --suppress-seconds 4
 ```
 
-A response contains the source filename and SHA256, sampled frame number, exact frame-derived timestamp in seconds, sampled scene ID, and cosine similarity. Similarity is not a calibrated probability. Results are frame matches; the system does not infer actions, dialogue, music or plot from audio.
+Source hashes, model revision and numeric-array hashes are checked on load. Weight-loading defects raise errors rather than substituting random features. See [Report](Report.md) for the real-data training procedure and [data sources](docs/datasets.md) for licensing and attribution.
 
-## Retrieval design
+## Executed notebooks
 
-Frames are selected at fixed time intervals using the video's reported FPS. A small RGB change heuristic assigns approximate shot IDs at sampled frames. Near-identical CLIP embeddings (cosine >= .985) are removed within the same sampled shot. Query results suppress nearby timestamps from the same video so one shot does not fill the entire result list. NumPy exact cosine search keeps the implementation inspectable; approximate indexing can be added when corpus size justifies it.
+- [Main workflow](notebooks/00_main_video_retrieval.ipynb): readable preparation, CLIP, temporal pooling, scorer, adapter, loss and training-loop code; actual source checks, two-query training replay and timestamp outputs from the saved checkpoint.
+- [Real-source EDA](notebooks/01_real_source_eda.ipynb): measured source splits, description lengths, human-reference disagreement and temporal geometry.
+- [Experiments and errors](notebooks/02_experiments_and_errors.ipynb): actual decoder failure, all-source audit, weight-loading and serialization evidence. Full curves remain pending.
 
-The index manifest records video hashes, encoder identity/revision, interval, dimension, frame counts and vector-file hash. Querying verifies vector integrity and encoder identity. Index files use `allow_pickle=False`. Source code never silently substitutes random weights if model download fails.
+![Actual two-query training replay](docs/figures/adapter-smoke-loss.png)
 
-## Data and attribution
+Optional encoding/training is disabled by default in notebooks. Executed public outputs contain aggregates and timestamp geometry, not private descriptions or media. Raw footage, captions and weights remain ignored.
 
-The reproducible demo uses a 30-second Big Buck Bunny excerpt, approximately 5.6 MB, from a commit-pinned mirror. Original film: **(c) copyright 2008, Blender Foundation / www.bigbuckbunny.org**, [CC-BY-3.0](https://peach.blender.org/about/). Source URL, exact hash and excerpt scope are in `models/sample-provenance.json`. [Dataset notes](docs/datasets.md) explain mirror provenance. Downloaded media are not redistributed in this repository.
+## Data and limits
 
-The four-query first diagnostic is supplemented by a controlled movie-held-out study: eight validation queries across Big Buck Bunny and Elephants Dream select retrieval settings; eight frozen Sintel queries are evaluated once against all three films. Four sampling/prompt configurations and chronological/uniform-random baselines are reported. See [experiment plan](docs/experiment-plan.md), [evaluation protocol](docs/evaluation.md), and actual JSON results. This small open-movie study does not establish large-scale video benchmark performance.
+The current available DiDeMo subset has 364 training videos/1,390 queries, 73 validation videos/261 queries and 47 test videos. Test descriptions and target intervals are not staged for training. Availability filtering is substantial; this is not a reproduction of the full official benchmark. One training video declared six bins but lasted only 24.17 seconds. The first full job stopped before training or scoring; an audit of all 485 downloaded sources rejected that entire video before the corrected run.
 
-## Limits
+Human reference intervals can disagree or admit no consensus-positive candidate. Custom corpus recall requires the correct video and temporal overlap; official within-video metrics are separate. Static averaged frames can miss temporal order, brief actions, small objects and negation. Exact-media split checks cannot rule out near duplicates, common creators or CLIP pretraining exposure.
 
-Coarse sampling can miss short scenes; sampled shot IDs are a heuristic rather than frame-perfect scene detection. Static CLIP features may miss temporal relations, complex actions, negation and small objects. Encoding truncates long text to CLIP's token limit. Variable-frame-rate videos may have approximate timestamps because this reader uses reported average FPS; constant-frame-rate media are recommended when exact seek alignment matters. The current index is rebuilt rather than incrementally updated, and search is linear in frame count. Use only footage you are authorized to process.
-
-`notebooks/` contains sampling EDA and a complete runnable retrieval walkthrough. Production indexing and evaluation live in `src/`; CI runs isolated unit tests without downloading model weights or media.
-
-## Controlled movie-held-out study
-
-```sh
-python -m src.data.make_dataset --all
-python -m src.models.train_model data/raw/big-buck-bunny.mp4 data/raw/elephants-dream.mp4 --interval 1 --output data/processed/validation-1
-python -m src.models.train_model data/raw/big-buck-bunny.mp4 data/raw/elephants-dream.mp4 --interval 2 --output data/processed/validation-2
-python -m src.models.experiment select
-python -m src.models.train_model data/raw/big-buck-bunny.mp4 data/raw/elephants-dream.mp4 data/raw/sintel-trailer.mp4 --interval 2 --output data/processed/heldout
-video-search "Wide rolling sand dunes in a desert" --index data/processed/heldout
-```
-
-The checked-in selection chooses interval2 and raw query. The final test output is preserved in `models/heldout-evaluation.json`; the test runner refuses to overwrite it. A new independent test set is required for future tuning studies. Index building uses pretrained CLIP rather than learning new model parameters. Use separate virtual environments for these repositories because the requested layout exposes a package named `src`.
-
-## Runnable notebook
-
-Open [the complete workflow](notebooks/02_retrieval_workflow.ipynb) for real-data preparation, production-module execution, saved artifacts, and results plots. Expensive execution is explicit; recorded results are labeled and held-out evaluation is not automatically repeated.
+The historical eight-query Sintel movie test is preserved in `models/heldout-evaluation.json`. It is an observed small demo test, not a fresh DiDeMo holdout or a basis for new model choices. Source files and indices use safe numeric-array loading; approximate timestamps on variable-frame-rate footage remain a limitation.
