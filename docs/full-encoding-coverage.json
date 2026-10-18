@@ -1,0 +1,52 @@
+{
+  "schema": "full_video_encoding_coverage_v1",
+  "videos": 7454,
+  "frame_samples": 87356,
+  "splits": [
+    {
+      "split": "train",
+      "source_video_ids": 5987,
+      "unique_videos": 5916,
+      "frame_samples": 69344,
+      "candidate_moments": 119292,
+      "queries": 23202,
+      "query_text_encoded": true
+    },
+    {
+      "split": "val",
+      "source_video_ids": 823,
+      "unique_videos": 797,
+      "frame_samples": 9294,
+      "candidate_moments": 15927,
+      "queries": 3132,
+      "query_text_encoded": true
+    },
+    {
+      "split": "test",
+      "source_video_ids": 761,
+      "unique_videos": 741,
+      "frame_samples": 8718,
+      "candidate_moments": 15039,
+      "queries": 2972,
+      "query_text_encoded": false
+    }
+  ],
+  "segment_distribution": [
+    {
+      "segments": 5,
+      "videos": 1046
+    },
+    {
+      "segments": 6,
+      "videos": 6408
+    }
+  ],
+  "seconds": 23347.183104986,
+  "cache_manifest_sha256": "ea73dced79e83cfc735652d6f8e702011d4e663c3fd9307ef010f66b9120a785",
+  "protocol_sha256": "d81c9ef5aa881b04440806702312023135aea8eab9b6a4ba9c10fcab335a39a3",
+  "root_metadata_audit_sha256": "9a761c0a0655df91190cebc8f9ef8f8dac0d174f7a7ba5f304528857cdf8c3e5",
+  "test_cohort_sha256": "6e4dcdfe816138cae7803db0977d9b9300a3593cd0d49167b64b2b270d49be38",
+  "test_targets_used": false,
+  "numeric_arrays_independently_rehashed_on_host": false,
+  "scope": "Complete retained noncommercial research availability cohort; not every official video or license category."
+}

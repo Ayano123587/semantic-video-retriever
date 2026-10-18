@@ -23,15 +23,37 @@ def stage(output, directory='data/external/didemo', receipts='data/interim/didem
     if decoder_preflight is not None:
         decoder_path=Path(decoder_preflight);decoder_hash=hashlib.sha256(decoder_path.read_bytes()).hexdigest()
         decoded=json.loads(decoder_path.read_text(encoding='utf-8'));seen=set()
+        if 'receipt_sha256' in decoded and decoded['receipt_sha256']!=hashlib.sha256(receipt_path.read_bytes()).hexdigest():
+            raise ValueError('Decoder receipt cohort mismatch')
+        official_geometry={}
+        for split in ('train','val','test'):
+            path=directory/f'{split}_data.json';content=path.read_bytes()
+            if hashlib.sha256(content).hexdigest()!=HASHES[path.name]:raise ValueError('Changed official metadata')
+            for row in json.loads(content):
+                key=(split,row['video']);n=row['num_segments']
+                if key in official_geometry and official_geometry[key]!=n:raise ValueError('Inconsistent video geometry')
+                official_geometry[key]=n
+        hash_aliases={}
+        for key,receipt in available.items():
+            hash_aliases.setdefault(receipt['sha256'],[]).append({
+                'split':key[0],'video':key[1],'num_segments':official_geometry[key]})
+        for aliases in hash_aliases.values():aliases.sort(key=lambda r:(r['split'],r['video']))
         for row in decoded['rows']:
             key=(row['split'],row['video'])
             if key not in available:raise ValueError('Decoder source outside frozen availability cohort')
             expected=available[key]['sha256']
             if row.get('sha256',expected)!=expected:raise ValueError('Decoder source hash mismatch')
+            aliases=hash_aliases[expected]
+            conflict=len({alias['num_segments'] for alias in aliases})>1
+            if conflict or row.get('reason')=='annotation_geometry_conflict':
+                if not conflict or row.get('reason')!='annotation_geometry_conflict' or row.get('status')!='invalid' or row.get('aliases')!=aliases or row.get('last_frame_decoded') is not False or row.get('geometry_inspected') is not False:
+                    raise ValueError('Decoder annotation conflict provenance mismatch')
             if expected in seen:raise ValueError('Duplicate decoder inspection')
             seen.add(expected)
             duration=row.get('duration',0);fps=row.get('fps',0);segments=row.get('num_segments',0)
+            if segments!=official_geometry[key]:raise ValueError('Decoder annotation geometry mismatch')
             valid=type(segments) is int and 1<=segments<=6 and all(isinstance(v,(int,float)) and math.isfinite(v) and v>0 for v in (duration,fps)) and duration>(segments-1)*5
+            if 'status' in row:valid=valid and row['status']=='valid' and row.get('last_frame_decoded') is True
             if not valid:excluded.add(expected)
         if seen!={r['sha256'] for r in available.values()}:raise ValueError('Incomplete decoder coverage')
         available={key:r for key,r in available.items() if r['sha256'] not in excluded}
@@ -98,4 +120,7 @@ def stage(output, directory='data/external/didemo', receipts='data/interim/didem
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',required=True);p.add_argument('--decoder-preflight')
-    a=p.parse_args();stage(a.output,decoder_preflight=a.decoder_preflight)
+    p.add_argument('--directory',default='data/external/didemo')
+    p.add_argument('--receipts',default='data/interim/didemo-expanded-downloads/receipts.jsonl')
+    p.add_argument('--selection',default='data/interim/didemo-expanded-selection.json')
+    a=p.parse_args();stage(a.output,directory=a.directory,receipts=a.receipts,selection=a.selection,decoder_preflight=a.decoder_preflight)

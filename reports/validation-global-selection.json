@@ -1,0 +1,78 @@
+{
+  "selected": "frozen_clip",
+  "selected_validation": {
+    "queries": 3132,
+    "candidate_moments": 15927,
+    "corpus_consensus_r1_iou50": 0.05779054916985951,
+    "corpus_consensus_r5_iou50": 0.11143039591315454,
+    "corpus_video_r1": 0.14367816091954022,
+    "corpus_video_r5": 0.19029374201787994,
+    "within_video_official_rank1": 0.1334610472541507,
+    "within_video_official_rank5": 0.3847381864623244,
+    "within_video_official_miou": 0.36704448701575143,
+    "consensus_attainable_fraction": 1.0,
+    "metric_scope": "licensed available subset; corpus metrics custom; within-video formula official",
+    "tie_rule": "stable original candidate order; no gold-dependent tie breaking"
+  },
+  "baseline": {
+    "queries": 3132,
+    "candidate_moments": 15927,
+    "corpus_consensus_r1_iou50": 0.05779054916985951,
+    "corpus_consensus_r5_iou50": 0.11143039591315454,
+    "corpus_video_r1": 0.14367816091954022,
+    "corpus_video_r5": 0.19029374201787994,
+    "within_video_official_rank1": 0.1334610472541507,
+    "within_video_official_rank5": 0.3847381864623244,
+    "within_video_official_miou": 0.36704448701575143,
+    "consensus_attainable_fraction": 1.0,
+    "metric_scope": "licensed available subset; corpus metrics custom; within-video formula official",
+    "tie_rule": "stable original candidate order; no gold-dependent tie breaking"
+  },
+  "phases": [
+    {
+      "phase": "phase1",
+      "report_sha256": "671ca0adab08434de2a3ea618e54ba427c8d8a19cd180c5ad3757409d30e7688",
+      "checkpoint_sha256": "97a54a16c7df3110ec051887a9a711a0217514e558055209d4c26cfc742b35d6",
+      "validation": {
+        "queries": 3132,
+        "candidate_moments": 15927,
+        "corpus_consensus_r1_iou50": 0.05779054916985951,
+        "corpus_consensus_r5_iou50": 0.11143039591315454,
+        "corpus_video_r1": 0.14367816091954022,
+        "corpus_video_r5": 0.19029374201787994,
+        "within_video_official_rank1": 0.1334610472541507,
+        "within_video_official_rank5": 0.3847381864623244,
+        "within_video_official_miou": 0.36704448701575143,
+        "consensus_attainable_fraction": 1.0,
+        "metric_scope": "licensed available subset; corpus metrics custom; within-video formula official",
+        "tie_rule": "stable original candidate order; no gold-dependent tie breaking"
+      },
+      "promotion_eligible": false
+    },
+    {
+      "phase": "phase2",
+      "report_sha256": "49a03fb7b212a61c4ad7a2c8ca745f37490723333f1680169ce7ee9eb7c9dfe4",
+      "checkpoint_sha256": "97a54a16c7df3110ec051887a9a711a0217514e558055209d4c26cfc742b35d6",
+      "validation": {
+        "queries": 3132,
+        "candidate_moments": 15927,
+        "corpus_consensus_r1_iou50": 0.05779054916985951,
+        "corpus_consensus_r5_iou50": 0.11143039591315454,
+        "corpus_video_r1": 0.14367816091954022,
+        "corpus_video_r5": 0.19029374201787994,
+        "within_video_official_rank1": 0.1334610472541507,
+        "within_video_official_rank5": 0.3847381864623244,
+        "within_video_official_miou": 0.36704448701575143,
+        "consensus_attainable_fraction": 1.0,
+        "metric_scope": "licensed available subset; corpus metrics custom; within-video formula official",
+        "tie_rule": "stable original candidate order; no gold-dependent tie breaking"
+      },
+      "promotion_eligible": false
+    }
+  ],
+  "protocol_sha256": "d81c9ef5aa881b04440806702312023135aea8eab9b6a4ba9c10fcab335a39a3",
+  "cache_manifest_sha256": "ea73dced79e83cfc735652d6f8e702011d4e663c3fd9307ef010f66b9120a785",
+  "selected_checkpoint_sha256": "79dbec526ac9aa5900d6c42ad8c33dee870e89425cac08be4f2075a94fccfdbb",
+  "checkpoint_replay_max_abs_error": 0.0,
+  "test_targets_used": false
+}

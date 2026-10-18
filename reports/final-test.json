@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "source_manifest_sha256": "ad99d633cee842d81a237dcd95e75f39edcf1589392963a3f5310fbf0cbda09b",
+  "cache_manifest_sha256": "ea73dced79e83cfc735652d6f8e702011d4e663c3fd9307ef010f66b9120a785",
+  "selected_checkpoint_sha256": "79dbec526ac9aa5900d6c42ad8c33dee870e89425cac08be4f2075a94fccfdbb",
+  "official_test_sha256": "1891c04ec48b3d364c739594b2b6413806b74bd9027c092d896e7ebb930ff1cd",
+  "winner": "frozen_clip",
+  "adapted_score_weight": 0.0,
+  "test_cohort_sha256": "6e4dcdfe816138cae7803db0977d9b9300a3593cd0d49167b64b2b270d49be38",
+  "expected_test_queries": 2972,
+  "expected_query_ids_sha256": "756b9284331409d16790d03ef2559333c0fd036b3e9f95d99b7050186315f06c",
+  "global_protocol_sha256": "d81c9ef5aa881b04440806702312023135aea8eab9b6a4ba9c10fcab335a39a3",
+  "policy_sha256": "8f16e99d6207d7c013ea69ef3ed601471d2cad4a23f168829f9109950003ad16",
+  "baseline": {
+    "queries": 2972,
+    "candidate_moments": 15039,
+    "corpus_consensus_r1_iou50": 0.06493943472409153,
+    "corpus_consensus_r5_iou50": 0.12954239569313594,
+    "corpus_video_r1": 0.1692462987886945,
+    "corpus_video_r5": 0.21635262449528936,
+    "within_video_official_rank1": 0.1271870794078062,
+    "within_video_official_rank5": 0.3495962314939435,
+    "within_video_official_miou": 0.35831277104830267,
+    "consensus_attainable_fraction": 1.0,
+    "metric_scope": "licensed available subset; corpus metrics custom; within-video formula official",
+    "tie_rule": "stable original candidate order; no gold-dependent tie breaking"
+  },
+  "selected": {
+    "queries": 2972,
+    "candidate_moments": 15039,
+    "corpus_consensus_r1_iou50": 0.06493943472409153,
+    "corpus_consensus_r5_iou50": 0.12954239569313594,
+    "corpus_video_r1": 0.1692462987886945,
+    "corpus_video_r5": 0.21635262449528936,
+    "within_video_official_rank1": 0.1271870794078062,
+    "within_video_official_rank5": 0.3495962314939435,
+    "within_video_official_miou": 0.35831277104830267,
+    "consensus_attainable_fraction": 1.0,
+    "metric_scope": "licensed available subset; corpus metrics custom; within-video formula official",
+    "tie_rule": "stable original candidate order; no gold-dependent tie breaking"
+  },
+  "encoder": {
+    "model_id": "openai/clip-vit-base-patch32",
+    "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+    "loading_info": {
+      "missing_keys": [],
+      "unexpected_keys": [],
+      "mismatched_keys": [],
+      "error_msgs": []
+    }
+  },
+  "test_labels_used_only_after_global_freeze": true,
+  "limits": [
+    "Available licensed subset, not the full benchmark.",
+    "One-shot consistency guard is not adversarial authentication.",
+    "Unknown pretrained exposure; repeated validation selection."
+  ],
+  "rank_evidence": {
+    "manifest_sha256": "f79207a919c793984e7f97340db38d1ae12fdf40aefffff9e04de821ed5f1075",
+    "directory": "video-final-test-rank-evidence",
+    "queries": 2972,
+    "videos": 741,
+    "independent_saved_rank_replay": true
+  }
+}

@@ -1,59 +1,84 @@
 # Semantic Video Retriever
 
-The current noncommercial research run attempts every adaptation-permitting source in the pinned DiDeMo metadata: 6,005 training, 825 validation and 762 test video candidates. There is no sampling cap. Download and decoder validation are in progress, so these are candidate counts rather than completed benchmark counts. See [research coverage](docs/full-research-coverage-amendment.json).
+Retrieve timestamped video moments from natural-language queries using CLIP embeddings and contiguous temporal candidates. The project includes real-data preparation, full-corpus encoding, residual text-adapter training, validation-based policy selection, and a frozen final evaluation.
 
-Find timestamped moments in real video using a natural-language description. A pinned CLIP image/text encoder supplies frozen features; contiguous five-second moments are ranked by cosine similarity. The current DiDeMo study trains a residual text adapter from real human descriptions and temporal references, with validation-only model selection.
+The selected policy is **frozen CLIP**. All 21 adapter fits completed, and 16 advanced scoring policies were evaluated. None passed the preregistered validation promotion gate; the project makes no learned-improvement claim.
 
-Full-cohort training and evaluation are in progress. Historical subset experiments are not presented as full-dataset results; earlier test exposure will remain disclosed in the expanded evaluation.
+## Data
+
+The retained DiDeMo research cohort contains **7,454 unique videos**: 5,916 training, 797 validation, and 741 test videos. It includes 23,202 training descriptions, 3,132 validation queries, and 2,972 eligible final-test queries. Source aliases are resolved to canonical media hashes.
+
+This is the complete retained licensed, available cohort, not the entire official benchmark. Data preparation records source URLs, license categories, download receipts, exact duplicates, and decoder geometry. Noncommercial restrictions and source attribution still apply. Footage, captions, feature arrays, and checkpoints are excluded from GitHub. See [data sources](docs/datasets.md).
+
+## Results
+
+Final evaluation uses all 2,972 eligible queries, 741 videos, and 15,039 temporal candidates.
+
+| Metric | Result |
+|---|---:|
+| Corpus consensus R@1, IoU ≥ 0.5 | 6.49% |
+| Corpus consensus R@5, IoU ≥ 0.5 | 12.95% |
+| Within-video official R@1 | 12.72% |
+| Within-video official R@5 | 34.96% |
+| Within-video official mIoU | 35.83% |
+
+Corpus retrieval requires both the correct video and temporal agreement. Within-video metrics assume the correct video is known. The full saved-rank export independently reproduces all eight reported metrics. Production verification also re-encoded every validation query and checked search across all retained media.
 
 ## Run
 
-Create a separate virtual environment for this repository. These projects share a package named `src`; installing them together is unsupported.
+Use a separate environment for this repository:
 
-```powershell
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+source .venv/bin/activate
 python -m pip install -e ".[dev]"
-python -m src.data.make_dataset
-python -m src.models.train_model data/raw/big-buck-bunny.mp4
-python -m src.models.predict_model "An animated bird singing on a tree branch"
-python -m pytest -q
+python -m src.models.research_search --help
 ```
 
-On Linux/macOS use `source .venv/bin/activate`. This small CC-BY movie demo builds an index with pretrained CLIP; `train_model` does not fine-tune it. The separate DiDeMo adapter study performs actual parameter training. The first CLIP download is approximately 605 MB.
+On Windows, activate with `.venv\Scripts\Activate.ps1` instead. To search your own real video, use footage you own or are licensed to process:
 
-```powershell
+```bash
 video-index path/to/licensed-video.mp4 --output data/processed/my-index --interval 2 --device cpu
 video-search "person opening a door" --index data/processed/my-index --top-k 5 --suppress-seconds 4
 ```
 
-Source hashes, model revision and numeric-array hashes are checked on load. Weight-loading defects raise errors rather than substituting random features. See [Report](Report.md) for the real-data training procedure and [data sources](docs/datasets.md) for licensing and attribution.
+This builds a pretrained CLIP frame index and returns matching timestamps; it does not fine-tune the encoder or reproduce the temporal-retrieval benchmark. The first run downloads the pinned encoder weights.
 
-## Research data
+Reproducing the audited research search requires the matching prepared-data manifest, receipts, feature cache, selected checkpoint, and SHA-bound approval. The loader checks those identities and the frozen numerical runtime before loading model or array data.
 
-```powershell
-python -m src.data.didemo --noncommercial-research
-python -m src.data.didemo --noncommercial-research --download
+```bash
+python -m src.models.research_search "person opening a door" \
+  --cache PATH_TO_CACHE --prepared PATH_TO_PREPARED \
+  --receipts PATH_TO_RECEIPTS --checkpoint PATH_TO_SELECTED_CHECKPOINT \
+  --approval PATH_TO_APPROVAL --approval-sha256 APPROVAL_SHA256 \
+  --split all --top-k 5
 ```
 
-This study includes CC BY/BY-SA/BY-NC/BY-NC-SA 2.0 sources for noncommercial research. Preserve each source attribution and license. Media, captions, frame samples and trained weights remain private. NoDerivatives categories remain excluded; this is not all license categories of the official benchmark. The animation demo above is an installation check.
+The audit ran on CPU with Python 3.13.15, PyTorch 2.11.0+cpu, NumPy 2.1.3, and Transformers 4.57.6. Exact package, encoder-asset, and CPU/runtime identities are recorded in the evidence. Private research artifacts must be obtained or reproduced under their source licenses; the command does not download a ready-made benchmark bundle.
 
-## Executed notebooks
+## Notebooks
 
-- [Main workflow](notebooks/00_main_video_retrieval.ipynb): readable preparation, CLIP, temporal pooling, scorer, adapter, loss and training-loop code; actual source checks, two-query training replay and timestamp outputs from the saved checkpoint.
-- [Real-source EDA](notebooks/01_real_source_eda.ipynb): measured source splits, description lengths, human-reference disagreement and temporal geometry.
-- [Experiments and errors](notebooks/02_experiments_and_errors.ipynb): actual decoder failure, all-source audit, weight-loading and serialization evidence. Includes actual nine-fit learning curves and negative validation comparisons.
+| Notebook | Contents |
+|---|---|
+| [00 — Complete workflow](notebooks/00_complete_workflow.ipynb) | Real-data contracts, feature/training implementation, completed experiments, selection, and final results |
+| [01 — Source exploration](notebooks/01_real_source_eda.ipynb) | Real source coverage, descriptions, and temporal annotation distributions |
+| [02 — Training](notebooks/02_full_training.ipynb) | All 21 fit histories, early stopping, 16 policies, and selected-policy validation errors |
+| [03 — Final evaluation](notebooks/03_final_evaluation.ipynb) | Production verification, full-cohort rank replay, localization errors, and citations |
+| [04 — Corpus encoding](notebooks/04_full_corpus_encoding.ipynb) | Encoding coverage and temporal geometry for all 7,454 retained videos |
+| [05 — Advanced experiments](notebooks/05_advanced_training_analysis.ipynb) | Twelve advanced fits and all 16 validation policies |
 
-![Actual two-query training replay](docs/figures/adapter-smoke-loss.png)
+The analysis reads authenticated actual reports and rank artifacts. It does not rerun model fitting. See [Report](Report.md) for the evaluation protocol and interpretation.
 
-Optional encoding/training is disabled by default in notebooks. Executed public outputs contain aggregates and timestamp geometry, not private descriptions or media. Raw footage, captions and weights remain ignored.
+Run the saved analyses in their locked environment:
 
-- [Final evaluation](notebooks/03_final_evaluation.ipynb): executed identity checks and aggregate one-shot metrics, with validation/test cohort differences kept explicit.
+```bash
+uv sync --project notebook-environment --locked
+```
 
-## Data and limits
+This uses Python 3.12.15. Read each notebook's input cells for its matching
+licensed data and recorded evidence; reproducing the saved analyses does not
+silently start model training.
 
-The current available DiDeMo subset has 364 training videos/1,390 queries, 73 validation videos/261 queries and 47 test videos. Test descriptions and target intervals are not staged for training. Availability filtering is substantial; this is not a reproduction of the full official benchmark. One training video declared six bins but lasted only 24.17 seconds. The first full job stopped before training or scoring; an audit of all 485 downloaded sources rejected that entire video before the corrected run.
+## Limits
 
-Human reference intervals can disagree or admit no consensus-positive candidate. Custom corpus recall requires the correct video and temporal overlap; official within-video metrics are separate. Static averaged frames can miss temporal order, brief actions, small objects and negation. Exact-media split checks cannot rule out near duplicates, common creators or CLIP pretraining exposure.
-
-The historical eight-query Sintel movie test is preserved in `models/heldout-evaluation.json`. It is an observed small demo test, not a fresh DiDeMo holdout or a basis for new model choices. Source files and indices use safe numeric-array loading; approximate timestamps on variable-frame-rate footage remain a limitation.
+Static CLIP frame pooling can miss motion order, brief actions, and small objects. Exact media hashes do not detect every near duplicate. Pretraining exposure is unknown. Some test queries were inspected during earlier development, which limits held-out independence. The final selected policy and scoring rules were frozen before the complete final release; no final-test tuning was performed.

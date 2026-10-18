@@ -57,10 +57,8 @@ def score_policy(bundle, x, v):
     return result
 
 
-def checked_cache(cache, protocol):
-    p = json.loads(Path(protocol).read_text(encoding='utf-8'))
-    if p['source_manifest_sha256'] != MANIFEST or digest(Path(cache)/'manifest.json') != MANIFEST:
-        raise ValueError('Protocol/source manifest mismatch')
+def validate_protocol_grid(p):
+    """The fixed grid is shared; cohort bindings remain separate."""
     if p['local_loss_weights'] != LAMBDAS or p['seeds'] != SEEDS or p['adapted_score_weights'] != ALPHAS:
         raise ValueError('Protocol candidate grid mismatch')
     if p['optimizer'] != {'name':'AdamW','lr':.0003,'weight_decay':.01,'temperature':.07,'batch':64}:
@@ -69,7 +67,13 @@ def checked_cache(cache, protocol):
         raise ValueError('Protocol stopping mismatch')
     if p['promotion'] != {'minimum_absolute_primary_gain_over_frozen_clip':.01,'maximum_within_video_miou_drop':.01}:
         raise ValueError('Protocol promotion mismatch')
-    data, manifest = load_cache(cache)
+
+def checked_cache(cache, protocol, *, indexed=False):
+    p = json.loads(Path(protocol).read_text(encoding='utf-8'))
+    if p['source_manifest_sha256'] != MANIFEST or digest(Path(cache)/'manifest.json') != MANIFEST:
+        raise ValueError('Protocol/source manifest mismatch')
+    validate_protocol_grid(p)
+    data, manifest = load_cache(cache,indexed=indexed)
     return data, manifest, p
 
 
@@ -104,16 +108,26 @@ def smoke(cache, output, protocol):
 
 def train(cache, output, protocol):
     torch.set_num_threads(2); torch.use_deterministic_algorithms(True)
-    data, manifest, p = checked_cache(cache, protocol)
+    data, manifest, p = checked_cache(cache, protocol,indexed=True)
+    return _train_checked(data, manifest, p, output, protocol, digest(Path(cache)/'manifest.json'))
+
+
+def _train_checked(data, manifest, p, output, protocol, cache_manifest_sha256):
+    """Fit only data already accepted by a cohort-specific protocol checker."""
+    torch.set_num_threads(2); torch.use_deterministic_algorithms(True)
     out = Path(output)
     if out.exists(): raise ValueError('Fresh output required')
     out.mkdir(parents=True)
-    t = data['train']; val = data['val']; valid = t['positive'].any(1)
-    x = t['x'][valid]; positive = t['positive'][valid]; v = t['v']
-    local = same_video_mask(t['queries'],t['candidates'])[valid]
+    t = data['train']; val = data['val']; valid = torch.from_numpy(t['positive_index'].valid)
+    query_ids=np.flatnonzero(t['positive_index'].valid)
+    x = t['x'][valid]; v = t['v']
+    if len(x)==0:raise ValueError('No training query has a consensus-positive moment')
     baseline = evaluate(scores_for([],val['x'],val['v']),val['candidates'],val['queries'])
     for key, expected in p['baseline'].items():
-        if abs(baseline[key]-expected)>1e-12: raise ValueError('Historical baseline mismatch')
+        actual = baseline[key]
+        if isinstance(expected,(int,float)) and not isinstance(expected,bool):
+            if not math.isfinite(expected) or not math.isfinite(actual) or abs(actual-expected)>1e-12: raise ValueError('Frozen baseline mismatch')
+        elif actual != expected: raise ValueError('Frozen baseline metadata mismatch')
     reports=[]; policies=[]; best=-1.; winner=[]; winner_alpha=0.; winner_name='frozen_clip'; winner_metrics=baseline
     start=time.monotonic()
     for weight in LAMBDAS:
@@ -126,15 +140,19 @@ def train(cache, output, protocol):
                 model.train(); total=0.
                 for ix in torch.randperm(len(x),generator=rng).split(64):
                     opt.zero_grad(); logits=model(x[ix])@v.T/.07
-                    loss=conditional_loss(logits,positive[ix],torch.ones_like(positive[ix]))
-                    if weight: loss=loss+weight*conditional_loss(logits,positive[ix],local[ix])
+                    positive=torch.from_numpy(t['positive_index'].mask(query_ids[ix.numpy()]))
+                    loss=conditional_loss(logits,positive,torch.ones_like(positive))
+                    if weight:
+                        local=torch.from_numpy(t['positive_index'].same_video_mask(query_ids[ix.numpy()]))
+                        loss=loss+weight*conditional_loss(logits,positive,local)
                     loss.backward()
                     if not torch.isfinite(loss) or not all(torch.isfinite(a.grad).all() for a in model.parameters() if a.grad is not None):
                         raise ValueError('Nonfinite training')
                     opt.step(); total+=float(loss.detach())*len(ix)
                 model.eval()
                 with torch.inference_mode(): ranked=(model(val['x'])@val['v'].T).argmax(1)
-                primary=float(val['positive'][torch.arange(len(ranked)),ranked].float().mean())
+                primary=float(torch.tensor([int(candidate) in positives for candidate,positives in
+                                           zip(ranked,val['positive_index'].indices)],dtype=torch.float32).mean())
                 row={'epoch':epoch,'train_loss':total/len(x),'validation_corpus_consensus_r1_iou50':primary};history.append(row)
                 print(json.dumps({'lambda':weight,'seed':seed,**row}),flush=True)
                 if primary>peak:
@@ -152,13 +170,13 @@ def train(cache, output, protocol):
             if eligible and primary>best:
                 best=primary;winner=states;winner_alpha=alpha;winner_name=f'lambda{weight}-alpha{alpha}';winner_metrics=metrics
     bundle={'schema':1,'winner':winner_name,'states':winner,'adapted_score_weight':winner_alpha,'encoder':manifest['encoder'],
-            'cache_manifest_sha256':MANIFEST,'validation':winner_metrics,'training_consensus_no_positive_queries':int((~valid).sum()),'test_targets_used':False}
+            'cache_manifest_sha256':cache_manifest_sha256,'validation':winner_metrics,'training_consensus_no_positive_queries':int((~valid).sum()),'test_targets_used':False}
     torch.save(bundle,out/'selected.pt'); replay=torch.load(out/'selected.pt',weights_only=True,map_location='cpu')
     delta=float(np.max(np.abs(score_policy(bundle,val['x'][:3],val['v'])-score_policy(replay,val['x'][:3],val['v']))))
     if delta>1e-6:raise ValueError('Saved policy replay mismatch')
     result={'baseline':baseline,'runs':reports,'policies':policies,'selected':winner_name,'selected_validation':winner_metrics,
             'seconds':time.monotonic()-start,'torch_version':str(torch.__version__),'threads':2,'protocol_sha256':digest(protocol),
-            'cache_manifest_sha256':MANIFEST,'selected_checkpoint_sha256':digest(out/'selected.pt'),'checkpoint_replay_max_abs_error':delta,'test_targets_used':False}
+            'cache_manifest_sha256':cache_manifest_sha256,'selected_checkpoint_sha256':digest(out/'selected.pt'),'checkpoint_replay_max_abs_error':delta,'test_targets_used':False}
     (out/'results.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n',encoding='utf-8',newline='\n')
     return result
 

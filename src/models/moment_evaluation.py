@@ -4,10 +4,12 @@ The marker belongs to the prepared source directory, not the requested report.
 Copying the entire source to evade this guard violates the evaluation protocol;
 filesystem markers provide consistency, not adversarial authenticity.
 """
+
 import argparse
 import json
 import math
 import pickle
+import re
 from pathlib import Path
 
 import numpy as np
@@ -18,12 +20,90 @@ from src.data.didemo import HASHES, REVISION
 from src.models.encoder import CLIPEncoder, WEIGHTS_SHA256
 from src.models.moment_training import Adapter, digest, scores_for
 from src.models.moments import evaluate, moments, interval
+from src.data import test_cohort
+from src.data.test_cohort import CONTRACT, canonical
 
 POLICY = "frozen-test-policy.json"
 MARKER = "test-release-marker.json"
 ADAPTER_WINNERS = {"lr001", "lr0003", "decay01"} | {
-    f"lambda{weight}-alpha{alpha}" for weight in (0, 0.5, 1, 2)
-    for alpha in (0.25, 0.5, 0.75, 1.0)}
+    f"lambda{weight}-alpha{alpha}"
+    for weight in (0, 0.5, 1, 2)
+    for alpha in (0.25, 0.5, 0.75, 1.0)
+}
+
+
+def winner_family(selected):
+    """Validate the globally selected phase without changing its scoring recipe."""
+    winner = selected.get("winner")
+    if not isinstance(winner, str):
+        raise ValueError("Invalid selected winner label")
+    family = winner
+    if ":" in winner:
+        phase, family = winner.split(":", 1)
+        allowed = (
+            {"lr001", "lr0003", "decay01"}
+            if phase == "phase1"
+            else (
+                {name for name in ADAPTER_WINNERS if name.startswith("lambda")}
+                if phase == "phase2"
+                else set()
+            )
+        )
+        protocol = selected.get("global_protocol_sha256")
+        if (
+            family not in allowed
+            or not isinstance(protocol, str)
+            or not re.fullmatch("[0-9a-f]{64}", protocol)
+        ):
+            raise ValueError(
+                "Namespaced winner requires its matching globally frozen protocol"
+            )
+        if phase == "phase1" and adapted_weight(selected) != 1.0:
+            raise ValueError("Global phase1 policy requires full adapter score weight")
+    if family not in ADAPTER_WINNERS | {"frozen_clip"}:
+        raise ValueError("Unknown selected winner family")
+    return family
+
+
+def checked_test_cohort(source, prepared, available):
+    """Require the prospective full-query identity contract before opening gold."""
+    contract = read_json(Path(source) / CONTRACT)
+    counts = prepared.get("counts", {}).get("test", {})
+    aliases = contract.get("aliases", {})
+    queries = contract.get("queries", [])
+    if (
+        contract.get("schema") != "full_research_test_cohort_v1"
+        or (counts.get("source_video_ids"), counts.get("unique_media"))
+        != test_cohort.FULL_COUNTS
+        or contract.get("prepared_manifest_sha256")
+        != digest(Path(source) / "manifest.json")
+        or contract.get("receipt_sha256") != prepared.get("receipt_sha256")
+        or contract.get("official_test_sha256") != HASHES["test_data.json"]
+        or contract.get("targets_used") is not False
+        or contract.get("source_video_ids") != counts["source_video_ids"]
+        or contract.get("unique_media") != counts["unique_media"]
+        or len(aliases) != counts["source_video_ids"]
+        or set(aliases.values()) != set(available)
+        or contract.get("query_count") != len(queries)
+        or not queries
+        or contract.get("query_ids_sha256") != canonical(queries)
+    ):
+        raise ValueError("Complete prospective test cohort contract required")
+    identities = set()
+    covered = set()
+    for row in queries:
+        if (
+            set(row) != {"id", "source_video", "video", "num_segments"}
+            or row["id"] in identities
+            or aliases.get(row["source_video"]) != row["video"]
+            or row["num_segments"] != available[row["video"]]["num_segments"]
+        ):
+            raise ValueError("Invalid or duplicate prospective query identity")
+        identities.add(row["id"])
+        covered.add(row["source_video"])
+    if covered != set(aliases):
+        raise ValueError("Prospective query cohort omits source aliases")
+    return contract
 
 
 def adapted_weight(selected):
@@ -52,23 +132,35 @@ def read_json(path):
 
 
 def pinned_encoder(receipt):
-    expected = {"model_id": MODEL_ID, "revision": MODEL_REVISION,
-                "weights_sha256": WEIGHTS_SHA256}
-    if not isinstance(receipt, dict) or any(receipt.get(k) != v for k, v in expected.items()):
+    expected = {
+        "model_id": MODEL_ID,
+        "revision": MODEL_REVISION,
+        "weights_sha256": WEIGHTS_SHA256,
+    }
+    if not isinstance(receipt, dict) or any(
+        receipt.get(k) != v for k, v in expected.items()
+    ):
         raise ValueError("Encoder identity differs from the pinned production model")
     info = receipt.get("loading_info")
-    if not isinstance(info, dict) or any(info.get(k) != [] for k in
-            ("missing_keys", "unexpected_keys", "mismatched_keys", "error_msgs")):
+    if not isinstance(info, dict) or any(
+        info.get(k) != []
+        for k in ("missing_keys", "unexpected_keys", "mismatched_keys", "error_msgs")
+    ):
         raise ValueError("Incomplete pretrained loading evidence")
 
 
 def verified_inputs(source, cache, checkpoint):
     source, cache, checkpoint = Path(source), Path(cache), Path(checkpoint)
-    prepared, encoded = read_json(source / "manifest.json"), read_json(cache / "manifest.json")
+    prepared, encoded = read_json(source / "manifest.json"), read_json(
+        cache / "manifest.json"
+    )
     if not isinstance(prepared, dict) or not isinstance(encoded, dict):
         raise ValueError("Invalid source/cache manifest")
-    if not {"media.json", "train.json", "val.json"}.issubset(prepared.get("files", {})) or not {
-            "test-moments.npy", "test-candidates.json"}.issubset(encoded.get("files", {})):
+    if not {"media.json", "train.json", "val.json"}.issubset(
+        prepared.get("files", {})
+    ) or not {"test-moments.npy", "test-candidates.json"}.issubset(
+        encoded.get("files", {})
+    ):
         raise ValueError("Required source/test cache hashes are absent")
     for directory, manifest in ((source, prepared), (cache, encoded)):
         files = manifest.get("files")
@@ -79,12 +171,20 @@ def verified_inputs(source, cache, checkpoint):
                 raise ValueError("Unsafe manifest filename")
             if digest(directory / name) != expected:
                 raise ValueError("Changed source/cache file: " + name)
-    if prepared.get("official_metadata_sha256", {}).get("test_data.json") != HASHES["test_data.json"]:
+    if (
+        prepared.get("official_metadata_sha256", {}).get("test_data.json")
+        != HASHES["test_data.json"]
+    ):
         raise ValueError("Unpinned official test source")
     if prepared.get("source_revision") != REVISION:
         raise ValueError("Unpinned prepared source revision")
-    if (source / "test.json").exists() or any((cache / name).exists() for name in
-            ("test-text.npy", "test-queries.json")) or encoded.get("test_text_or_targets_encoded") is not False:
+    if (
+        (source / "test.json").exists()
+        or any(
+            (cache / name).exists() for name in ("test-text.npy", "test-queries.json")
+        )
+        or encoded.get("test_text_or_targets_encoded") is not False
+    ):
         raise ValueError("Test text/targets must remain absent from the prepared cache")
     if encoded.get("smoke_only") is not False:
         raise ValueError("Smoke cache cannot support holdout release")
@@ -95,7 +195,12 @@ def verified_inputs(source, cache, checkpoint):
         selected = torch.load(checkpoint, map_location="cpu", weights_only=True)
     except (OSError, RuntimeError, pickle.UnpicklingError) as exc:
         raise ValueError("Unreadable safe selected checkpoint") from exc
-    if not isinstance(selected, dict) or type(selected.get("schema")) is not int or selected.get("schema") != 1 or selected.get("test_targets_used") is not False:
+    if (
+        not isinstance(selected, dict)
+        or type(selected.get("schema")) is not int
+        or selected.get("schema") != 1
+        or selected.get("test_targets_used") is not False
+    ):
         raise ValueError("Invalid selected checkpoint schema")
     if selected.get("cache_manifest_sha256") != digest(cache / "manifest.json"):
         raise ValueError("Checkpoint/cache identity mismatch")
@@ -103,43 +208,86 @@ def verified_inputs(source, cache, checkpoint):
         raise ValueError("Checkpoint encoder identity mismatch")
     states = selected.get("states")
     winner = selected.get("winner")
+    family = winner_family(selected)
     alpha = adapted_weight(selected)
-    if not isinstance(winner, str) or winner not in ADAPTER_WINNERS | {"frozen_clip"} or not isinstance(states, list) or (
-            winner == "frozen_clip" and states) or (winner != "frozen_clip" and len(states) != 3):
-        raise ValueError("Expected frozen baseline or exactly three selected seed states")
-    if winner.startswith("lambda") and alpha != float(winner.split("-alpha")[1]):
+    if (
+        not isinstance(states, list)
+        or (family == "frozen_clip" and states)
+        or (family != "frozen_clip" and len(states) != 3)
+    ):
+        raise ValueError(
+            "Expected frozen baseline or exactly three selected seed states"
+        )
+    if family.startswith("lambda") and alpha != float(family.split("-alpha")[1]):
         raise ValueError("Winner label and adapted score weight disagree")
     for state in states:
-        if not isinstance(state, dict) or any(not isinstance(v, torch.Tensor) or v.dtype != torch.float32 or not torch.isfinite(v).all()
-                                              for v in state.values()):
+        if not isinstance(state, dict) or any(
+            not isinstance(v, torch.Tensor)
+            or v.dtype != torch.float32
+            or not torch.isfinite(v).all()
+            for v in state.values()
+        ):
             raise ValueError("Malformed or nonfinite adapter state")
         try:
             Adapter().load_state_dict(state, strict=True)
         except (RuntimeError, TypeError) as exc:
             raise ValueError("Adapter state schema mismatch") from exc
     media = read_json(source / "media.json")
-    if not isinstance(media, list) or any(not isinstance(r, dict) or not isinstance(r.get("video"), str)
-                                         or r.get("split") not in ("train", "val", "test") for r in media):
+    if not isinstance(media, list) or any(
+        not isinstance(r, dict)
+        or not isinstance(r.get("video"), str)
+        or r.get("split") not in ("train", "val", "test")
+        for r in media
+    ):
         raise ValueError("Invalid media list")
     available = {r["video"]: r for r in media if r["split"] == "test"}
-    if not available or len(available) != sum(r["split"] == "test" for r in media) or len(available) != prepared.get("counts", {}).get("test", {}).get("unique_media"):
+    if (
+        not available
+        or len(available) != sum(r["split"] == "test" for r in media)
+        or len(available)
+        != prepared.get("counts", {}).get("test", {}).get("unique_media")
+    ):
         raise ValueError("Incomplete prepared test media")
     candidates = read_json(cache / "test-candidates.json")
-    if not isinstance(candidates, list) or any(not isinstance(r, dict) or "video" not in r or "moment" not in r for r in candidates):
+    if not isinstance(candidates, list) or any(
+        not isinstance(r, dict) or "video" not in r or "moment" not in r
+        for r in candidates
+    ):
         raise ValueError("Invalid candidate list")
-    expected = {(name, m) for name, row in available.items() for m in moments(row["num_segments"])}
+    expected = {
+        (name, m)
+        for name, row in available.items()
+        for m in moments(row["num_segments"])
+    }
     actual = [(r["video"], interval(r["moment"])) for r in candidates]
     if len(actual) != len(set(actual)) or set(actual) != expected:
-        raise ValueError("Test candidate geometry does not exactly cover available media")
+        raise ValueError(
+            "Test candidate geometry does not exactly cover available media"
+        )
     vectors = np.load(cache / "test-moments.npy", allow_pickle=False)
-    if vectors.dtype != np.float32 or vectors.shape != (len(candidates), 512) or not np.isfinite(vectors).all() or not np.allclose(
-            np.linalg.norm(vectors, axis=1), 1, atol=1e-4):
+    if (
+        vectors.dtype != np.float32
+        or vectors.shape != (len(candidates), 512)
+        or not np.isfinite(vectors).all()
+        or not np.allclose(np.linalg.norm(vectors, axis=1), 1, atol=1e-4)
+    ):
         raise ValueError("Invalid normalized test media embeddings")
-    identities = {"source_manifest_sha256": digest(source / "manifest.json"),
-                  "cache_manifest_sha256": digest(cache / "manifest.json"),
-                  "selected_checkpoint_sha256": digest(checkpoint),
-                  "official_test_sha256": HASHES["test_data.json"], "winner": winner,
-                  "adapted_score_weight": alpha}
+    identities = {
+        "source_manifest_sha256": digest(source / "manifest.json"),
+        "cache_manifest_sha256": digest(cache / "manifest.json"),
+        "selected_checkpoint_sha256": digest(checkpoint),
+        "official_test_sha256": HASHES["test_data.json"],
+        "winner": winner,
+        "adapted_score_weight": alpha,
+    }
+    cohort = checked_test_cohort(source, prepared, available)
+    identities.update(
+        test_cohort_sha256=digest(source / CONTRACT),
+        expected_test_queries=cohort["query_count"],
+        expected_query_ids_sha256=cohort["query_ids_sha256"],
+    )
+    if "global_protocol_sha256" in selected:
+        identities["global_protocol_sha256"] = selected["global_protocol_sha256"]
     return identities, selected, available, candidates, vectors
 
 
@@ -149,70 +297,127 @@ def freeze(source, cache, checkpoint):
     if (source / MARKER).exists():
         raise ValueError("Test release already attempted")
     identities, _, _, _, _ = verified_inputs(source, cache, checkpoint)
-    policy = {"schema": 1, **identities, "test_targets_used": False,
-              "selection_scope": "Final global policy, not a per-report choice"}
+    policy = {
+        "schema": 1,
+        **identities,
+        "test_targets_used": False,
+        "selection_scope": "Final global policy, not a per-report choice",
+    }
     with (source / POLICY).open("x", encoding="utf-8") as handle:
         json.dump(policy, handle, indent=2, allow_nan=False)
     return policy
 
 
-def release(source, cache, checkpoint, official_test, output, *, encoder_factory=CLIPEncoder):
+def release(
+    source, cache, checkpoint, official_test, output, *, encoder_factory=CLIPEncoder
+):
     """Deliberately open labels once; use cloud CPU for actual pretrained encoding."""
     source, output = Path(source), Path(output)
     if output.exists():
         raise ValueError("Refuse to overwrite an existing report")
     if (source / MARKER).exists():
         raise ValueError("Test release already attempted, regardless of report path")
-    identities, selected, available, candidates, vectors = verified_inputs(source, cache, checkpoint)
+    identities, selected, available, candidates, vectors = verified_inputs(
+        source, cache, checkpoint
+    )
     policy = read_json(source / POLICY)
-    if not isinstance(policy, dict) or policy.get("schema") != 1 or policy.get("test_targets_used") is not False or any(
-            policy.get(k) != value for k, value in identities.items()):
+    if (
+        not isinstance(policy, dict)
+        or policy.get("schema") != 1
+        or policy.get("test_targets_used") is not False
+        or any(policy.get(k) != value for k, value in identities.items())
+    ):
         raise ValueError("Frozen global policy differs from supplied artifacts")
     # Hashing bytes does not parse targets. The exclusive marker precedes parsing.
     if digest(official_test) != identities["official_test_sha256"]:
         raise ValueError("Changed official test annotation file")
     with (source / MARKER).open("x", encoding="utf-8") as handle:
-        json.dump({"status": "release attempted; preserve even on failure", **identities,
-                   "policy_sha256": digest(source / POLICY), "report": str(output.resolve())}, handle, indent=2)
+        json.dump(
+            {
+                "status": "release attempted; preserve even on failure",
+                **identities,
+                "policy_sha256": digest(source / POLICY),
+                "report": str(output.resolve()),
+            },
+            handle,
+            indent=2,
+        )
+    cohort = checked_test_cohort(source, read_json(source / "manifest.json"), available)
     rows = read_json(official_test)
     if not isinstance(rows, list):
         raise ValueError("Invalid official annotation root")
     queries = []
     seen = set()
-    for row in rows:
+    actual_identities = []
+    aliases = cohort["aliases"]
+    for position, row in enumerate(rows):
         if not isinstance(row, dict):
             raise ValueError("Malformed official annotation row")
-        if row.get("video") not in available:
+        source_video = row.get("video")
+        if source_video not in aliases:
             continue
-        geometry = available[row["video"]]["num_segments"]
+        video = aliases[source_video]
+        geometry = available[video]["num_segments"]
+        actual_identities.append(
+            dict(
+                id=f"test:{position}:{row.get('annotation_id')}",
+                source_video=source_video,
+                video=video,
+                num_segments=row.get("num_segments"),
+            )
+        )
         if row.get("num_segments") != geometry:
             raise ValueError("Official/prepared test geometry mismatch")
         text, references = row.get("description"), row.get("times")
-        if not isinstance(text, str) or not text.strip() or not isinstance(references, list) or not references:
+        if (
+            not isinstance(text, str)
+            or not text.strip()
+            or not isinstance(references, list)
+            or not references
+        ):
             raise ValueError("Malformed human query/references")
         if any(interval(t)[1] >= geometry for t in references):
             raise ValueError("Human target outside available geometry")
-        queries.append({"video": row["video"], "times": references, "text": text})
-        seen.add(row["video"])
+        queries.append({"video": video, "times": references, "text": text})
+        seen.add(video)
     if seen != set(available):
         raise ValueError("Official test queries do not cover all available test media")
+    if actual_identities != cohort["queries"]:
+        raise ValueError(
+            "Full official source query identities differ from prospective freeze"
+        )
     encoder = encoder_factory("cpu")
     pinned_encoder(encoder.receipt)
     if encoder.receipt != selected["encoder"]:
         raise ValueError("Actual inference encoder differs from frozen checkpoint")
-    text_vectors = np.concatenate([encoder.texts([r["text"] for r in queries[i:i+32]])
-                                   for i in range(0, len(queries), 32)])
-    if text_vectors.dtype != np.float32 or text_vectors.shape != (len(queries), 512) or not np.isfinite(text_vectors).all() or not np.allclose(
-            np.linalg.norm(text_vectors, axis=1), 1, atol=1e-4):
+    text_vectors = np.concatenate(
+        [
+            encoder.texts([r["text"] for r in queries[i : i + 32]])
+            for i in range(0, len(queries), 32)
+        ]
+    )
+    if (
+        text_vectors.dtype != np.float32
+        or text_vectors.shape != (len(queries), 512)
+        or not np.isfinite(text_vectors).all()
+        or not np.allclose(np.linalg.norm(text_vectors, axis=1), 1, atol=1e-4)
+    ):
         raise ValueError("Invalid encoded test queries")
     x, v = torch.from_numpy(text_vectors), torch.from_numpy(vectors)
-    report = {"schema": 1, **identities, "policy_sha256": digest(source / POLICY),
-              "baseline": evaluate(scores_for([], x, v), candidates, queries),
-              "selected": evaluate(policy_scores(selected, x, v), candidates, queries),
-              "encoder": encoder.receipt, "test_labels_used_only_after_global_freeze": True,
-              "limits": ["Available licensed subset, not the full benchmark.",
-                         "One-shot consistency guard is not adversarial authentication.",
-                         "Unknown pretrained exposure; repeated validation selection."]}
+    report = {
+        "schema": 1,
+        **identities,
+        "policy_sha256": digest(source / POLICY),
+        "baseline": evaluate(scores_for([], x, v), candidates, queries),
+        "selected": evaluate(policy_scores(selected, x, v), candidates, queries),
+        "encoder": encoder.receipt,
+        "test_labels_used_only_after_global_freeze": True,
+        "limits": [
+            "Available licensed subset, not the full benchmark.",
+            "One-shot consistency guard is not adversarial authentication.",
+            "Unknown pretrained exposure; repeated validation selection.",
+        ],
+    }
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("x", encoding="utf-8") as handle:
         json.dump(report, handle, indent=2, allow_nan=False)
@@ -232,7 +437,9 @@ def main():
     else:
         if not args.official_test or not args.output:
             parser.error("release requires --official-test and --output")
-        result = release(args.source, args.cache, args.checkpoint, args.official_test, args.output)
+        result = release(
+            args.source, args.cache, args.checkpoint, args.official_test, args.output
+        )
     print(json.dumps(result, indent=2))
 
 

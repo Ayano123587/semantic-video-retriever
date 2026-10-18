@@ -1,0 +1,116 @@
+{
+  "figures": [
+    {
+      "path": "docs/figures/00_complete_workflow-cell003-output01.png",
+      "sha256": "0d733c8ec62239b55adc6e57eb87b28b8dc15b455ed02ceeb7fe7556c7769d68",
+      "bytes": 24870,
+      "notebook": "notebooks/00_complete_workflow.ipynb",
+      "cell": 3,
+      "output": 1
+    },
+    {
+      "path": "docs/figures/00_complete_workflow-cell008-output01.png",
+      "sha256": "167b451aacedc0b4fb75c8aa353dea132b2deecac8bbe91c345875bf881bb2a3",
+      "bytes": 54816,
+      "notebook": "notebooks/00_complete_workflow.ipynb",
+      "cell": 8,
+      "output": 1
+    },
+    {
+      "path": "docs/figures/00_complete_workflow-cell011-output02.png",
+      "sha256": "afeca03340599678c14110c38e3329fe3738fa6ee2071d5cba17016460d2b255",
+      "bytes": 50714,
+      "notebook": "notebooks/00_complete_workflow.ipynb",
+      "cell": 11,
+      "output": 2
+    },
+    {
+      "path": "docs/figures/02_full_training-cell003-output00.png",
+      "sha256": "13877750149288143ba65d9330fe3852c1f3efab1842136fcd9d8d1e9541063b",
+      "bytes": 277030,
+      "notebook": "notebooks/02_full_training.ipynb",
+      "cell": 3,
+      "output": 0
+    },
+    {
+      "path": "docs/figures/02_full_training-cell004-output01.png",
+      "sha256": "167b451aacedc0b4fb75c8aa353dea132b2deecac8bbe91c345875bf881bb2a3",
+      "bytes": 54816,
+      "notebook": "notebooks/02_full_training.ipynb",
+      "cell": 4,
+      "output": 1
+    },
+    {
+      "path": "docs/figures/02_full_training-cell006-output01.png",
+      "sha256": "0d733c8ec62239b55adc6e57eb87b28b8dc15b455ed02ceeb7fe7556c7769d68",
+      "bytes": 24870,
+      "notebook": "notebooks/02_full_training.ipynb",
+      "cell": 6,
+      "output": 1
+    },
+    {
+      "path": "docs/figures/02_full_training-cell007-output02.png",
+      "sha256": "afeca03340599678c14110c38e3329fe3738fa6ee2071d5cba17016460d2b255",
+      "bytes": 50714,
+      "notebook": "notebooks/02_full_training.ipynb",
+      "cell": 7,
+      "output": 2
+    },
+    {
+      "path": "docs/figures/02_full_training-cell008-output00.png",
+      "sha256": "e90b0280d39551961438f143155472f4109770a8a8c0009ccb2f4e1ed248de82",
+      "bytes": 45187,
+      "notebook": "notebooks/02_full_training.ipynb",
+      "cell": 8,
+      "output": 0
+    },
+    {
+      "path": "docs/figures/03_final_evaluation-cell002-output01.png",
+      "sha256": "0d733c8ec62239b55adc6e57eb87b28b8dc15b455ed02ceeb7fe7556c7769d68",
+      "bytes": 24870,
+      "notebook": "notebooks/03_final_evaluation.ipynb",
+      "cell": 2,
+      "output": 1
+    },
+    {
+      "path": "docs/figures/03_final_evaluation-cell004-output02.png",
+      "sha256": "afeca03340599678c14110c38e3329fe3738fa6ee2071d5cba17016460d2b255",
+      "bytes": 50714,
+      "notebook": "notebooks/03_final_evaluation.ipynb",
+      "cell": 4,
+      "output": 2
+    },
+    {
+      "path": "docs/figures/03_final_evaluation-cell006-output00.png",
+      "sha256": "e90b0280d39551961438f143155472f4109770a8a8c0009ccb2f4e1ed248de82",
+      "bytes": 45187,
+      "notebook": "notebooks/03_final_evaluation.ipynb",
+      "cell": 6,
+      "output": 0
+    },
+    {
+      "path": "docs/figures/full-encoding-coverage.png",
+      "sha256": "957abe3d6d64d95624e966654cbc10a1267381a3b3f023f22e3413a3952aa24a",
+      "bytes": 46574,
+      "evidence": "Preserved actual public scientific figure"
+    },
+    {
+      "path": "docs/figures/full-source-description-distributions.png",
+      "sha256": "ceee36a8cc62b8d060413f7939f1f08d537316bceec02884edf699e0324cf81c",
+      "bytes": 44830,
+      "evidence": "Preserved actual public scientific figure"
+    },
+    {
+      "path": "docs/figures/full-source-human-agreement.png",
+      "sha256": "e817ec7f0d7b1af9f2bcb32f5ea69968fd852ac0fe607b4ebd29206a6000d6c4",
+      "bytes": 27978,
+      "evidence": "Preserved actual public scientific figure"
+    },
+    {
+      "path": "docs/figures/full-source-query-concentration.png",
+      "sha256": "71ac2c79f726834a2aa176bcf44ee688d7ed900daf7fcddbd9c449d982f6bf09",
+      "bytes": 30028,
+      "evidence": "Preserved actual public scientific figure"
+    }
+  ]
+}

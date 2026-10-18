@@ -1,9 +1,13 @@
 """Pinned official DiDeMo metadata; natural videos and human temporal labels."""
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 import hashlib
 import json
 from pathlib import Path
 import re
+import os
+import shutil
+from tempfile import TemporaryDirectory
 import time
 from urllib.request import Request, urlopen
 
@@ -98,14 +102,35 @@ def selection(directory='data/external/didemo', output='data/interim/didemo-full
     return result
 
 
+def media_filename(video):
+    """Keep official IDs separate from filenames that Windows can represent."""
+    if not isinstance(video,str) or not re.fullmatch(r'[A-Za-z0-9@_-]+\.[A-Za-z0-9]{0,10}',video):
+        raise ValueError('Invalid source video filename')
+    if video.endswith('.'):
+        return 'source-'+hashlib.sha256(video.encode('utf-8')).hexdigest()+'.mp4'
+    return video
+
+
+@contextmanager
+def decoder_source(path):
+    """AWS bytes are MP4 even when the official upload suffix differs."""
+    path=Path(path)
+    if path.suffix.lower()=='.mp4':
+        yield path
+        return
+    with TemporaryDirectory(prefix='decoder-source-',dir=path.parent) as temporary:
+        compatible=Path(temporary)/'source.mp4'
+        try:os.link(path,compatible)
+        except OSError:shutil.copyfile(path,compatible)
+        yield compatible
+
+
 def download_one(record, directory='data/raw/didemo'):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     # The official names preserve original upload extensions, while AWS serves
     # transcoded MP4 bytes. Validate a safe basename, not one particular suffix.
-    if not re.fullmatch(r'[A-Za-z0-9@_-]+\.[A-Za-z0-9]{1,10}',record['video']):
-        raise ValueError('Invalid source video filename')
-    path = directory/record['video']
+    path = directory/media_filename(record['video'])
     if not path.exists():
         temporary = path.with_suffix('.part')
         request = Request(record['aws_url'], headers={'User-Agent':'semantic-video-research/0.1'})

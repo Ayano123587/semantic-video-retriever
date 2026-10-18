@@ -1,0 +1,34 @@
+{
+  "schema": "video_query_proof_execution_v1",
+  "action": "proof",
+  "status": "complete",
+  "transport_sha256": "5c7c32703ea0c68886d990d992a20709801710d85d2788902baccf3c0e0d6371",
+  "root_query_policy_sha256": "24f5749f2cb82c11713d5ab94a791f7bb69b03c329b5429ab3cfb1911924cbeb",
+  "local_path_projection_sha256": "5c7ebdf9dafc97ca6d2658fdb0d3036da686c7f11a725d3f9c7136b7e13fcc35",
+  "asset_inventory_sha256": "6331e04f7d8e78bd9dbec39d36b9b8045e75da560470b029d81e1aeedc03c34d",
+  "historical_tokenizer_inventory_claimed": false,
+  "test_descriptions_or_targets_used": false,
+  "result": {
+    "schema": "full_validation_video_query_replay_v1",
+    "queries": 3132,
+    "query_ids_sha256": "3289fceae6467bcd925825802b4d94eb67f8f39cc6730d2a44cf6a3a45f12e6a",
+    "reencoding_batch": 32,
+    "embedding_tolerance": 1e-05,
+    "batch_cached_max_abs_error": 0.0,
+    "scalar_batch_max_abs_error": 5.066394805908203e-07,
+    "scalar_cached_max_abs_error": 5.066394805908203e-07,
+    "same_vector_stable_all_split_topk_matches": 3132,
+    "citation_geometry_checks": 15660,
+    "top_k": 5,
+    "truncation": {
+      "queries": 3132,
+      "over_token_limit": 0,
+      "maximum_tokens": 34
+    },
+    "selected_validation_metrics_replayed": true,
+    "test_descriptions_or_targets_used": false,
+    "all_split_benchmark_score_claimed": false,
+    "different_vector_rank_bitwise_claimed": false
+  },
+  "postflight_source_inputs_runtime_assets_passed": true
+}

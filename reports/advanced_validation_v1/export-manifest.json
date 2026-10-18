@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "test_evaluated": false,
+  "kernel_id": 139291990,
+  "version": 1,
+  "fits": 12,
+  "policies": 16,
+  "validation_queries": 3132,
+  "candidate_moments": 15927,
+  "native_artifacts_independently_verified": false,
+  "all_policy_dense_scores_independently_replayed": false,
+  "terminal_metadata_sha256": {
+    "results.json": "49a03fb7b212a61c4ad7a2c8ca745f37490723333f1680169ce7ee9eb7c9dfe4",
+    "status.json": "94ddb25a8aa60e4b31e8e9285157d604006b5462ac115eabd8ed99e16c09a681",
+    "checkpoint-000022.json": "5d6dbda5ebae2c04a6305b14824ea963500140b2fc334e4a7006c85d0d38b15b"
+  },
+  "outputs_sha256": {
+    "results.json": "49a03fb7b212a61c4ad7a2c8ca745f37490723333f1680169ce7ee9eb7c9dfe4"
+  }
+}

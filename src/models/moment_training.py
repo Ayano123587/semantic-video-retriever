@@ -20,7 +20,7 @@ class Adapter(nn.Module):
 def digest(path):
     with Path(path).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 
-def load_cache(path,allow_smoke=False):
+def load_cache(path,allow_smoke=False,indexed=False):
     path=Path(path);manifest=json.loads((path/'manifest.json').read_text())
     if manifest['smoke_only'] and not allow_smoke:raise ValueError('Smoke cache cannot support benchmark training')
     for name,expected in manifest['files'].items():
@@ -33,8 +33,12 @@ def load_cache(path,allow_smoke=False):
         if x.shape!=(len(q),512) or v.shape!=(len(c),512):raise ValueError('Feature shape mismatch')
         if not np.isfinite(x).all() or not np.isfinite(v).all():raise ValueError('Nonfinite cached features')
         if not np.allclose(np.linalg.norm(x,axis=1),1,atol=1e-4) or not np.allclose(np.linalg.norm(v,axis=1),1,atol=1e-4):raise ValueError('Unnormalized CLIP features')
-        result[split]={'x':torch.from_numpy(x),'v':torch.from_numpy(v),'queries':q,'candidates':c,
-                       'positive':torch.from_numpy(np.stack([positive_mask(c,row) for row in q]))}
+        result[split]={'x':torch.from_numpy(x),'v':torch.from_numpy(v),'queries':q,'candidates':c}
+        if indexed:
+            from src.models.positive_index import PositiveIndex
+            result[split]['positive_index']=PositiveIndex(c,q)
+        else:
+            result[split]['positive']=torch.from_numpy(np.stack([positive_mask(c,row) for row in q]))
     return result,manifest
 
 def multipositive_loss(scores,positives):
@@ -53,9 +57,10 @@ def train(cache,output):
     torch.set_num_threads(2);torch.use_deterministic_algorithms(True)
     output=Path(output)
     if output.exists():raise ValueError('Preserve prior training evidence; use a fresh output directory')
-    data,manifest=load_cache(cache);output.mkdir(parents=True,exist_ok=False)
-    training=data['train'];validation=data['val'];valid=training['positive'].any(dim=1)
-    x=training['x'][valid];positive=training['positive'][valid];v=training['v']
+    data,manifest=load_cache(cache,indexed=True);output.mkdir(parents=True,exist_ok=False)
+    training=data['train'];validation=data['val'];valid=torch.from_numpy(training['positive_index'].valid)
+    query_ids=np.flatnonzero(training['positive_index'].valid)
+    x=training['x'][valid];v=training['v']
     if len(x)==0:raise ValueError('No training query has a consensus-positive moment')
     baseline_scores=scores_for([],validation['x'],validation['v'])
     baseline=evaluate(baseline_scores,validation['candidates'],validation['queries'])
@@ -71,11 +76,13 @@ def train(cache,output):
                 model.train();order=torch.randperm(len(x),generator=rng);total=0.
                 for indices in order.split(64):
                     optimizer.zero_grad();logits=model(x[indices])@v.T/.07
-                    loss=multipositive_loss(logits,positive[indices]);loss.backward();optimizer.step()
+                    positive=torch.from_numpy(training['positive_index'].mask(query_ids[indices.numpy()]))
+                    loss=multipositive_loss(logits,positive);loss.backward();optimizer.step()
                     total+=float(loss.detach())*len(indices)
                 model.eval()
                 with torch.inference_mode():ranked=(model(validation['x'])@validation['v'].T).argmax(dim=1)
-                primary=float(validation['positive'][torch.arange(len(ranked)),ranked].float().mean())
+                primary=float(torch.tensor([int(candidate) in positives for candidate,positives in
+                                           zip(ranked,validation['positive_index'].indices)],dtype=torch.float32).mean())
                 history.append({'epoch':epoch,'train_loss':total/len(x),'validation_corpus_consensus_r1_iou50':primary})
                 if primary>best:
                     best=primary;best_epoch=epoch;best_state={k:t.detach().clone() for k,t in model.state_dict().items()}

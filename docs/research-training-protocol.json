@@ -1,0 +1,164 @@
+{
+  "schema": "research_conditional_v1",
+  "implementation_sha256": {
+    "models/resumable_training.py": "fb8fec504c3e4e3a0035613b106d96519d385f9ea5d32e78043aa76a6be2614d",
+    "config.py": "b132152b04376cf37042eaa9f899cc365a03398933ead1af25517d244e961ef4",
+    "data/didemo.py": "3f23a900b4809f483e7b47c1011481dd37f8f06bf9d8d01817ad96cfff4ec358",
+    "models/moment_encoder.py": "5f50dd10fb97f3cfa88afc21d1b87f3c06c80e001f9d280bdcd31932840092ba",
+    "models/research_followup.py": "0af9e2ab7382347503466990733222d2143e63a8111920f7910366a2e4384951",
+    "models/localization_followup.py": "b93cf87f7a88f203dab45e8b7fd5cacefc58a799526e08f6976b7f2b4712002a",
+    "models/moment_training.py": "e9de30757223951640e13479d2b0c16f7719b51359707d21e7123bb8b89ff2d3",
+    "models/positive_index.py": "6726bf15bfb973847b3f284df7fb2e90fb0751132dfd59043a321ec3518d3da4",
+    "models/encoding_progress.py": "131c30b0e445e387174e234a8690551f3f880cb64bda5e616d072a08fe083e50",
+    "models/moments.py": "a94727b0acf118449968f20676d0a018c573c3fc7afabcd165708399d956bd88",
+    "models/encoder.py": "8e90964e272b72fecc75b60271c6f5ec0cbab71ccdb9da9cbf5c206ab78fc9d1",
+    "data/decoder_preflight.py": "22df37f1e052f2c3127d7d2c1518c8804aa2ab0682c6a7f8953331c4b35c8acc",
+    "data/decoder_recovery.py": "d86c281b93a493fea8230b6b3b3271488a73a470eb1bcef07c491db6c3fc9565",
+    "data/prepare_moments.py": "944121890873fb83368de1c7b79e319c4b4d7f53b08e9954ff950acfcf9bae9e",
+    "data/research_receipts.py": "2664029bd3a66997d2d0e54015260893d9197927d75fe653313d634fba1e0917"
+  },
+  "source_manifest_sha256": "ea73dced79e83cfc735652d6f8e702011d4e663c3fd9307ef010f66b9120a785",
+  "preparation_manifest_sha256": "ad99d633cee842d81a237dcd95e75f39edcf1589392963a3f5310fbf0cbda09b",
+  "accounting_sha256": "8b6d297ef73aa2e06ef9886c7d4727e80202f69db045508c1e2c2a98b28b38fe",
+  "resolved_receipts_sha256": "b203e4fca08279f9e39c1c3a7e665a8e9cefaf8243a4e2ffc01da1c9516d88b6",
+  "decoder_sha256": "93921216603aacd750a1b4cdb181719c41c94ef5518e09f828b5bd945dc83c79",
+  "coverage": {
+    "candidate_count": 7592,
+    "retained_media": 7454,
+    "decoder_sources": 7464,
+    "decoder_excluded": 10
+  },
+  "local_loss_weights": [
+    0,
+    0.5,
+    1,
+    2
+  ],
+  "adapted_score_weights": [
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "seeds": [
+    42,
+    1337,
+    2026
+  ],
+  "optimizer": {
+    "name": "AdamW",
+    "lr": 0.0003,
+    "weight_decay": 0.01,
+    "temperature": 0.07,
+    "batch": 64
+  },
+  "epochs": {
+    "maximum": 50,
+    "minimum": 5,
+    "patience": 8,
+    "selection": "per-seed validation primary; earliest exact ties"
+  },
+  "promotion": {
+    "minimum_absolute_primary_gain_over_frozen_clip": 0.01,
+    "maximum_within_video_miou_drop": 0.01
+  },
+  "phase1": {
+    "configs": [
+      {
+        "name": "lr001",
+        "lr": 0.001,
+        "weight_decay": 0.01
+      },
+      {
+        "name": "lr0003",
+        "lr": 0.0003,
+        "weight_decay": 0.01
+      },
+      {
+        "name": "decay01",
+        "lr": 0.001,
+        "weight_decay": 0.1
+      }
+    ],
+    "seeds": [
+      42,
+      1337,
+      2026
+    ],
+    "temperature": 0.07,
+    "batch": 64,
+    "epochs": {
+      "maximum": 50,
+      "minimum": 5,
+      "patience": 8
+    },
+    "promotion": {
+      "minimum_absolute_primary_gain_over_frozen_clip": 0.01,
+      "maximum_within_video_miou_drop": 0.01
+    }
+  },
+  "baseline": {
+    "queries": 3132,
+    "candidate_moments": 15927,
+    "corpus_consensus_r1_iou50": 0.05779054916985951,
+    "corpus_consensus_r5_iou50": 0.11143039591315454,
+    "corpus_video_r1": 0.14367816091954022,
+    "corpus_video_r5": 0.19029374201787994,
+    "within_video_official_rank1": 0.1334610472541507,
+    "within_video_official_rank5": 0.3847381864623244,
+    "within_video_official_miou": 0.36704448701575143,
+    "consensus_attainable_fraction": 1.0,
+    "metric_scope": "licensed available subset; corpus metrics custom; within-video formula official",
+    "tie_rule": "stable original candidate order; no gold-dependent tie breaking"
+  },
+  "encoding_identity": {
+    "source_manifest_sha256": "ad99d633cee842d81a237dcd95e75f39edcf1589392963a3f5310fbf0cbda09b",
+    "encoder": {
+      "model_id": "openai/clip-vit-base-patch32",
+      "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+      "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+      "loading_info": {
+        "missing_keys": [],
+        "unexpected_keys": [],
+        "mismatched_keys": [],
+        "error_msgs": []
+      }
+    },
+    "ordered_records_sha256": "013c8c48069e6581e27cd074eb187ecde868279ca17a43d9e52787464cfdb55b",
+    "encoder_source_sha256": "5f50dd10fb97f3cfa88afc21d1b87f3c06c80e001f9d280bdcd31932840092ba",
+    "progress_source_sha256": "131c30b0e445e387174e234a8690551f3f880cb64bda5e616d072a08fe083e50",
+    "torch": "2.11.0+cpu",
+    "device": "cpu",
+    "model_dtype": "torch.float32",
+    "transformers": "4.57.6",
+    "pillow": "12.3.0",
+    "imageio": "2.37.4",
+    "imageio_ffmpeg": "0.6.0",
+    "torch_build_sha256": "4b0a06296437b8ab14fe4ddcefa886af69b057ea450f495010a5f8f5e90a087a",
+    "cpu_identity": {
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "cpuinfo": {
+        "vendor_id": "GenuineIntel",
+        "cpu family": "6",
+        "model": "79",
+        "model name": "Intel(R) Xeon(R) CPU @ 2.20GHz",
+        "stepping": "0",
+        "flags": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch pti ssbd ibrs ibpb stibp fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm rdseed adx smap xsaveopt arat md_clear arch_capabilities"
+      }
+    },
+    "numpy": "2.1.3",
+    "ffmpeg": "7.0.2-static",
+    "smoke_only": false
+  },
+  "test_annotations_used": false,
+  "global_selection": {
+    "phases": [
+      "phase1",
+      "phase2"
+    ],
+    "criterion": "highest eligible validation corpus_consensus_r1_iou50",
+    "ties": "frozen_clip then phase1 then phase2; fixed within-phase policy order",
+    "test_access": false
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "full_video_source_eda_v1",
+  "prepared_manifest_sha256": "ad99d633cee842d81a237dcd95e75f39edcf1589392963a3f5310fbf0cbda09b",
+  "input_sha256": {
+    "train.json": "d1eb7aaa6da2a7606c7320f209996b3e32d2f1c110b823ae312998ae8d5727f2",
+    "val.json": "5b3ee1097aeae675b1931db85fcf243333cf79ed49f8c4dbbdcfa3ca5e15b395",
+    "media.json": "b7ac2de633e2e2121417a2f09eff7bbc12fd89c32c8284238450f91c238853d3"
+  },
+  "descriptions": 26334,
+  "test_descriptions_or_targets_read": false,
+  "scope": "Complete retained training and validation query cohorts; no model score.",
+  "splits": [
+    {
+      "split": "train",
+      "descriptions": 23202,
+      "unique_videos": 5916,
+      "alias_descriptions": 143,
+      "median_words": 7.0,
+      "maximum_words": 44,
+      "mean_words": 7.480518920782691,
+      "annotator_counts": {
+        "4": 23134,
+        "5": 1,
+        "7": 67
+      },
+      "mean_pairwise_iou": 0.7439968742431892,
+      "median_pairwise_iou": 0.75,
+      "mean_annotated_width_bins": 1.377036154518699,
+      "maximum_queries_per_video": 10
+    },
+    {
+      "split": "val",
+      "descriptions": 3132,
+      "unique_videos": 797,
+      "alias_descriptions": 55,
+      "median_words": 7.0,
+      "maximum_words": 30,
+      "mean_words": 7.539591315453384,
+      "annotator_counts": {
+        "4": 3121,
+        "7": 11
+      },
+      "mean_pairwise_iou": 0.7429924587970566,
+      "median_pairwise_iou": 0.75,
+      "mean_annotated_width_bins": 1.3751026272578,
+      "maximum_queries_per_video": 9
+    }
+  ]
+}

@@ -1,44 +1,49 @@
 {
   "notebooks": [
     {
-      "notebook": "notebooks/00_main_video_retrieval.ipynb",
-      "seconds": 40.94,
-      "executed_code_cells": 14,
-      "visible_plots": 1,
-      "actual_tables": 5,
-      "normalized_utf8_sha256": "d00ac1c31c1e5ca5b6f022f0c5a270c1d37298eaed5c6283a21d655979f4faae",
-      "phase2_new_cell_indices": [
-        21,
-        22
-      ],
-      "phase2_new_cell_seconds": 49.47,
-      "execution_mode": "Phase2 cells newly executed in fresh kernel; earlier genuinely executed outputs retained, not rerun"
+      "notebook": "notebooks/00_complete_workflow.ipynb",
+      "sha256": "253b5d799d63b137b669642cadae74ef9ed615929e4e5793c14f9b8ae33985d7",
+      "executed_code_cells": 7,
+      "visible_plots": 3,
+      "execution_manifest_sha256": "40a7a80b2af0a555f2d1c6786c9e34baed786f45824d4a03c23a5bc5f85c872b"
     },
     {
       "notebook": "notebooks/01_real_source_eda.ipynb",
-      "seconds": 18.42,
-      "executed_code_cells": 5,
+      "sha256": "0b88d177ed842aec45817a75964f4e961a2ed74e6464fdb440cdc9cd10a58c0f",
+      "executed_code_cells": 6,
       "visible_plots": 3,
-      "actual_tables": 2,
-      "normalized_utf8_sha256": "e83ed61f02213cb72d0cc4fedccda2b6b9353d55901e4577bd6f03d53c1a8706"
+      "evidence": "Preserved actual executed bytes; final cloud schema validation required"
     },
     {
-      "notebook": "notebooks/02_experiments_and_errors.ipynb",
-      "seconds": 21.73,
+      "notebook": "notebooks/02_full_training.ipynb",
+      "sha256": "ebd937da131635409107b999db24827fb6522573658b5a68650fd3fedcd30655",
       "executed_code_cells": 7,
       "visible_plots": 5,
-      "actual_tables": 7,
-      "normalized_utf8_sha256": "5782ed4ca9c6e60502b3079a38b629cbd43a0e5a83203004533d4d47f3f21dee",
-      "phase2_new_cell_indices": [
-        10,
-        11
-      ],
-      "phase2_new_cell_seconds": 32.59,
-      "execution_mode": "Phase2 cells newly executed in fresh kernel; earlier genuinely executed outputs retained, not rerun"
+      "execution_manifest_sha256": "40a7a80b2af0a555f2d1c6786c9e34baed786f45824d4a03c23a5bc5f85c872b"
+    },
+    {
+      "notebook": "notebooks/03_final_evaluation.ipynb",
+      "sha256": "830d10bfbd44f3c8e406d11523c00e3f5127fc9094bd514147e6003a6107fada",
+      "executed_code_cells": 5,
+      "visible_plots": 3,
+      "execution_manifest_sha256": "40a7a80b2af0a555f2d1c6786c9e34baed786f45824d4a03c23a5bc5f85c872b"
+    },
+    {
+      "notebook": "notebooks/04_full_corpus_encoding.ipynb",
+      "sha256": "0f43ce2acd49bc3fa32cb6cfd93353b87997afb3112d4226c50a126303e4f1c9",
+      "executed_code_cells": 3,
+      "visible_plots": 1,
+      "evidence": "Preserved actual executed bytes; final cloud schema validation required"
+    },
+    {
+      "notebook": "notebooks/05_advanced_training_analysis.ipynb",
+      "sha256": "098b26dd7a07e407554cb0ac32f31b71ac22b1a235123dd27884733c74b3a220",
+      "executed_code_cells": 4,
+      "visible_plots": 3,
+      "evidence": "Preserved actual executed bytes; final cloud schema validation required"
     }
   ],
-  "test_descriptions_or_targets_opened": false,
-  "local_CLIP_allocation": false,
-  "training": "Recorded21actualfit histories/16phase2policies; newly executed full-cache selected-checkpoint validation replay; no test scoring",
-  "public_outputs": "Aggregates, hashes and timestamp geometry only; no captions/media/weights"
+  "training_rerun": false,
+  "test_evaluation_rerun": false,
+  "scope": "Actual saved executed notebook bytes and observed code/figure counts; software CI has a separate receipt"
 }

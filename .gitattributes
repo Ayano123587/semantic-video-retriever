@@ -1,0 +1,10 @@
+# Preserve reviewed source and recorded evidence bytes across checkouts.
+/.gitattributes -text
+*.py -text
+*.ipynb -text
+*.json -text
+*.jsonl -text
+*.png -text
+*.txt -text
+*.toml -text
+*.lock -text
